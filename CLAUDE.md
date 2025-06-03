@@ -33,21 +33,22 @@ This is a Model Context Protocol (MCP) server that integrates with Motion's API 
    - Handles error responses uniformly
    - Provides typed methods for each API endpoint (e.g., `listTasks`, `createTask`, `updateTask`)
 
-3. **Tool Implementation Pattern**: Each tool follows this pattern:
-   - Define the tool schema in the `ListToolsRequestSchema` handler
-   - Implement the tool logic in the `CallToolRequestSchema` handler
-   - Call the appropriate method on the `MotionClient` instance
-   - Return structured MCP responses
+3. **Tool Implementation Pattern**: Each tool is self-contained in the `src/tools/` directory:
+   - Each tool has its own file (e.g., `list-tasks.ts`, `create-task.ts`)
+   - Tools export a factory function that returns a `ToolHandler` with both definition and handler
+   - The `tools/index.ts` file collects all tools and exports them via `createTools()`
+   - The main server simply maps tool definitions and routes handler calls
 
 ## Adding New Motion API Tools
 
 When implementing new Motion API endpoints:
 
 1. Check the Motion API docs at https://docs.usemotion.com/api-reference/
-2. Add type definitions in `src/types.ts` for the API response
+2. Add type definitions in `src/types.ts` for the API request/response
 3. Add a new method to `MotionClient` class in `src/motion-client.ts`
-4. Add the tool definition to the tools array in `setupToolHandlers()`
-5. Implement the tool logic in the `CallToolRequestSchema` handler by calling the new client method
+4. Create a new tool file in `src/tools/` (e.g., `src/tools/delete-task.ts`)
+5. Export a factory function that returns a `ToolHandler` with definition and handler
+6. Add the new tool to the exports in `src/tools/index.ts`
 
 ## Environment Requirements
 
