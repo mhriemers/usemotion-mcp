@@ -6,6 +6,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 
 - List tasks from Motion with various filtering options
 - Create new tasks in Motion with full configuration support
+- Update existing tasks with partial updates
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -107,6 +108,34 @@ Example response includes:
 - Created task details with generated ID
 - Scheduling information if auto-scheduled
 - All task properties including status and assignees
+
+#### update_motion_task
+
+Updates an existing task in Motion.
+
+Required Parameters:
+- `taskId`: The ID of the task to update
+
+Optional Parameters (all fields are optional for updates):
+- `name`: Updated task title
+- `workspaceId`: Updated workspace ID
+- `dueDate`: Updated ISO 8601 due date
+- `duration`: Updated duration ('NONE', 'REMINDER', or minutes)
+- `status`: Updated task status
+- `autoScheduled`: Updated scheduling settings or null to disable
+  - `startDate`: ISO 8601 date for scheduling start
+  - `deadlineType`: 'HARD', 'SOFT' (default), or 'NONE'
+  - `schedule`: Schedule name (defaults to 'Work Hours')
+- `projectId`: Updated project ID
+- `description`: Updated description in GitHub Flavored Markdown
+- `priority`: Updated priority ('ASAP', 'HIGH', 'MEDIUM', or 'LOW')
+- `labels`: Updated array of label names
+- `assigneeId`: Updated assignee user ID
+
+Example response includes:
+- Updated task with all current properties
+- Scheduling information if auto-scheduled
+- Custom field values if applicable
 
 ### Integration with MCP Clients
 

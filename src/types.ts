@@ -65,6 +65,26 @@ export interface CreateTaskResponse extends MotionTask {
   customFieldValues?: Record<string, any>;
 }
 
+export interface UpdateTaskRequest {
+  name?: string;
+  workspaceId?: string;
+  dueDate?: string;
+  duration?: string | number;
+  status?: string;
+  autoScheduled?: {
+    startDate: string;
+    deadlineType?: string;
+    schedule?: string;
+  } | null;
+  projectId?: string;
+  description?: string;
+  priority?: string;
+  labels?: string[];
+  assigneeId?: string;
+}
+
+export interface UpdateTaskResponse extends CreateTaskResponse {}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {
