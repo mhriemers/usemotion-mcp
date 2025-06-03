@@ -16,6 +16,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - List workspaces the user has access to
 - List projects within workspaces
 - Get individual project details by ID
+- Create new projects in workspaces
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -265,6 +266,30 @@ Example response includes:
   - Creation and update timestamps
   - Custom field values if applicable
 
+#### create_motion_project
+
+Creates a new project in Motion with comprehensive configuration options.
+
+Required Parameters:
+- `name`: The name of the project
+- `workspaceId`: The workspace ID where the project should be created
+
+Optional Parameters:
+- `dueDate`: ISO 8601 due date for the project
+- `description`: The description of the project (HTML input accepted)
+- `labels`: Array of label names for the project
+- `priority`: Project priority ('ASAP', 'HIGH', 'MEDIUM', 'LOW' - defaults to 'MEDIUM')
+- `projectDefinitionId`: Optional ID of the project definition (template) to use
+- `stages`: Array of stage objects (required if projectDefinitionId is provided):
+  - `stageDefinitionId`: ID of the stage definition
+  - `dueDate`: Due date for this stage (ISO 8601)
+  - `variableInstances`: Optional array to assign values to variables specific to this stage
+
+Example response includes:
+- Created project details with generated ID
+- Project status and workspace information
+- All project properties including name, description, and configuration
+
 ### Integration with MCP Clients
 
 To use this server with an MCP client (like Claude Desktop), add the following to your MCP configuration:
@@ -307,7 +332,8 @@ usemotion-mcp/
 │       ├── list-users.ts
 │       ├── list-workspaces.ts
 │       ├── list-projects.ts
-│       └── get-project.ts
+│       ├── get-project.ts
+│       └── create-project.ts
 ├── dist/               # Compiled JavaScript (generated)
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration

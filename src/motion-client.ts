@@ -11,6 +11,8 @@ import {
   MotionListUsersResponse,
   MotionListWorkspacesResponse,
   MotionListProjectsResponse,
+  CreateProjectRequest,
+  CreateProjectResponse,
   GetProjectResponse
 } from "./types.js";
 
@@ -177,5 +179,13 @@ export class MotionClient {
   async getProject(projectId: string): Promise<GetProjectResponse> {
     const endpoint = `/projects/${projectId}`;
     return this.makeRequest(endpoint);
+  }
+
+  async createProject(params: CreateProjectRequest): Promise<CreateProjectResponse> {
+    const endpoint = "/projects";
+    return this.makeRequest(endpoint, {
+      method: "POST",
+      body: JSON.stringify(params),
+    });
   }
 }

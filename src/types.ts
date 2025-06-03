@@ -154,6 +154,26 @@ export interface MotionListProjectsResponse {
   };
 }
 
+export interface CreateProjectRequest {
+  name: string;
+  workspaceId: string;
+  dueDate?: string;
+  description?: string;
+  labels?: string[];
+  priority?: string;
+  projectDefinitionId?: string;
+  stages?: Array<{
+    stageDefinitionId: string;
+    dueDate: string;
+    variableInstances?: Array<{
+      variableName: string;
+      value: string;
+    }>;
+  }>;
+}
+
+export interface CreateProjectResponse extends MotionProject {}
+
 export interface GetProjectResponse extends MotionProject {}
 
 export interface MotionListTasksResponse {
