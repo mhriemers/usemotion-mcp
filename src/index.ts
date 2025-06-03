@@ -4,27 +4,21 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { MotionListTasksResponse } from "./types.js";
-
-const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
-
-interface MotionConfig {
-  apiKey: string;
-}
+import { MotionClient, ListTasksParams } from "./motion-client.js";
 
 class MotionMCPServer {
   private server: Server;
-  private config: MotionConfig;
+  private motionClient: MotionClient;
 
   constructor() {
-    this.config = {
-      apiKey: process.env.MOTION_API_KEY || "",
-    };
+    const apiKey = process.env.MOTION_API_KEY || "";
 
-    if (!this.config.apiKey) {
+    if (!apiKey) {
       console.error("Error: MOTION_API_KEY environment variable is required");
       process.exit(1);
     }
+
+    this.motionClient = new MotionClient({ apiKey })
 
     this.server = new Server(
       {
@@ -41,26 +35,6 @@ class MotionMCPServer {
     this.setupToolHandlers();
   }
 
-  private async makeMotionRequest(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<any> {
-    const url = `${MOTION_API_BASE_URL}${endpoint}`;
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        "X-API-Key": this.config.apiKey,
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Motion API error: ${response.status} ${response.statusText}`);
-    }
-
-    return response.json();
-  }
 
   private setupToolHandlers() {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -113,25 +87,10 @@ class MotionMCPServer {
       CallToolRequestSchema,
       async (request) => {
         if (request.params.name === "list_motion_tasks") {
-          const args = request.params.arguments as any;
-          
-          // Build query parameters
-          const queryParams = new URLSearchParams();
-          if (args.assigneeId) queryParams.append("assigneeId", args.assigneeId);
-          if (args.cursor) queryParams.append("cursor", args.cursor);
-          if (args.includeAllStatuses !== undefined) {
-            queryParams.append("includeAllStatuses", args.includeAllStatuses.toString());
-          }
-          if (args.label) queryParams.append("label", args.label);
-          if (args.name) queryParams.append("name", args.name);
-          if (args.projectId) queryParams.append("projectId", args.projectId);
-          if (args.status) queryParams.append("status", args.status);
-          if (args.workspaceId) queryParams.append("workspaceId", args.workspaceId);
-
-          const endpoint = `/tasks${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+          const args = request.params.arguments as ListTasksParams;
           
           try {
-            const result: MotionListTasksResponse = await this.makeMotionRequest(endpoint);
+            const result = await this.motionClient.listTasks(args);
             return {
               content: [
                 {
