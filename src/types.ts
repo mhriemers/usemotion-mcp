@@ -154,6 +154,8 @@ export interface MotionListProjectsResponse {
   };
 }
 
+export interface GetProjectResponse extends MotionProject {}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {

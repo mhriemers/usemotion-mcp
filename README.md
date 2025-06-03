@@ -15,6 +15,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - List users in workspaces or teams
 - List workspaces the user has access to
 - List projects within workspaces
+- Get individual project details by ID
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -250,6 +251,20 @@ Example response includes:
   - Custom field values if applicable
 - Pagination metadata (nextCursor, pageSize)
 
+#### get_motion_project
+
+Retrieves a single project by its ID with complete details.
+
+Required Parameters:
+- `projectId`: The ID of the project to retrieve
+
+Example response includes:
+- Complete project details including:
+  - Project ID, name, description, and workspace ID
+  - Project status (name, default/resolved flags)
+  - Creation and update timestamps
+  - Custom field values if applicable
+
 ### Integration with MCP Clients
 
 To use this server with an MCP client (like Claude Desktop), add the following to your MCP configuration:
@@ -291,7 +306,8 @@ usemotion-mcp/
 │       ├── get-user.ts
 │       ├── list-users.ts
 │       ├── list-workspaces.ts
-│       └── list-projects.ts
+│       ├── list-projects.ts
+│       └── get-project.ts
 ├── dist/               # Compiled JavaScript (generated)
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration
