@@ -14,10 +14,6 @@ npm run build
 npm run dev
 ```
 
-**Test the server is working:**
-```bash
-npm test
-```
 
 **Run the production server:**
 ```bash

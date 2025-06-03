@@ -1,4 +1,4 @@
-import { MotionListTasksResponse, MotionTask } from "./types.js";
+import { MotionListTasksResponse } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
 
