@@ -7,6 +7,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - List tasks from Motion with various filtering options
 - Create new tasks in Motion with full configuration support
 - Update existing tasks with partial updates
+- Delete tasks from Motion
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -136,6 +137,16 @@ Example response includes:
 - Updated task with all current properties
 - Scheduling information if auto-scheduled
 - Custom field values if applicable
+
+#### delete_motion_task
+
+Deletes a task from Motion.
+
+Required Parameters:
+- `taskId`: The ID of the task to delete
+
+Example response:
+- Success message confirming task deletion
 
 ### Integration with MCP Clients
 

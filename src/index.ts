@@ -161,6 +161,36 @@ class MotionMCPServer {
         }
       }
     );
+
+    // Delete task tool
+    this.server.tool(
+      "delete_motion_task",
+      {
+        taskId: z.string().describe("The ID of the task to delete"),
+      },
+      async (params) => {
+        try {
+          await this.motionClient.deleteTask(params.taskId);
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Task ${params.taskId} deleted successfully`,
+              },
+            ],
+          };
+        } catch (error) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+              },
+            ],
+          };
+        }
+      }
+    );
   }
 
   async run() {

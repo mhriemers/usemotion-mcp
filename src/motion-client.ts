@@ -84,4 +84,11 @@ export class MotionClient {
       body: JSON.stringify(params),
     });
   }
+
+  async deleteTask(taskId: string): Promise<void> {
+    const endpoint = `/tasks/${taskId}`;
+    await this.makeRequest(endpoint, {
+      method: "DELETE",
+    });
+  }
 }
