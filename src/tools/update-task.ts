@@ -6,8 +6,8 @@ export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
     "update_motion_task",
     {
       taskId: z.string().describe("The ID of the task to update"),
-      name: z.string().optional().describe("Updated title of the task"),
-      workspaceId: z.string().optional().describe("Updated workspace ID for the task"),
+      name: z.string().describe("Updated title of the task"),
+      workspaceId: z.string().describe("Updated workspace ID for the task"),
       dueDate: z.string().optional().describe("Updated ISO 8601 due date. REQUIRED for scheduled tasks"),
       duration: z.union([z.string(), z.number()]).optional()
         .describe("Updated duration: 'NONE', 'REMINDER', or minutes as a number"),

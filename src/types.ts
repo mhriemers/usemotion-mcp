@@ -66,8 +66,8 @@ export interface CreateTaskResponse extends MotionTask {
 }
 
 export interface UpdateTaskRequest {
-  name?: string;
-  workspaceId?: string;
+  name: string;
+  workspaceId: string;
   dueDate?: string;
   duration?: string | number;
   status?: string;
