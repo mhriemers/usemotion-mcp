@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 ## Features
 
 - List tasks from Motion with various filtering options
+- Create new tasks in Motion with full configuration support
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -80,6 +81,33 @@ Example response includes:
 - Custom fields
 - Pagination metadata
 
+#### create_motion_task
+
+Creates a new task in Motion.
+
+Required Parameters:
+- `name`: Title of the task
+- `workspaceId`: The workspace ID where the task should be created
+
+Optional Parameters:
+- `dueDate`: ISO 8601 due date (required for scheduled tasks)
+- `duration`: Can be 'NONE', 'REMINDER', or minutes as a number
+- `status`: Task status (defaults to workspace default)
+- `autoScheduled`: Object with scheduling settings or null to disable
+  - `startDate`: ISO 8601 date for scheduling start
+  - `deadlineType`: 'HARD', 'SOFT' (default), or 'NONE'
+  - `schedule`: Schedule name (defaults to 'Work Hours')
+- `projectId`: Project ID to associate the task with
+- `description`: Task description in GitHub Flavored Markdown
+- `priority`: 'ASAP', 'HIGH', 'MEDIUM', or 'LOW'
+- `labels`: Array of label names to add to the task
+- `assigneeId`: User ID to assign the task to
+
+Example response includes:
+- Created task details with generated ID
+- Scheduling information if auto-scheduled
+- All task properties including status and assignees
+
 ### Integration with MCP Clients
 
 To use this server with an MCP client (like Claude Desktop), add the following to your MCP configuration:
@@ -119,9 +147,10 @@ usemotion-mcp/
 
 To add new Motion API endpoints as MCP tools:
 
-1. Add the tool definition in the `ListToolsRequestSchema` handler
-2. Implement the tool logic in the `CallToolRequestSchema` handler
-3. Use the `makeMotionRequest` method for API calls
+1. Add type definitions in `src/types.ts` for the API request/response
+2. Add a method to the `MotionClient` class in `src/motion-client.ts`
+3. Add the tool definition in the `ListToolsRequestSchema` handler
+4. Implement the tool logic in the `CallToolRequestSchema` handler
 
 ## API Reference
 
