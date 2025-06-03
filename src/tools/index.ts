@@ -10,6 +10,7 @@ import { registerDeleteTaskTool } from "./delete-task.js";
 import { registerGetUserTool } from "./get-user.js";
 import { registerListUsersTool } from "./list-users.js";
 import { registerListWorkspacesTool } from "./list-workspaces.js";
+import { registerListProjectsTool } from "./list-projects.js";
 
 export function registerAllTools(server: McpServer, client: MotionClient) {
   registerListTasksTool(server, client);
@@ -22,4 +23,5 @@ export function registerAllTools(server: McpServer, client: MotionClient) {
   registerGetUserTool(server, client);
   registerListUsersTool(server, client);
   registerListWorkspacesTool(server, client);
+  registerListProjectsTool(server, client);
 }

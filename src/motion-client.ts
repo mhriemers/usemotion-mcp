@@ -9,7 +9,8 @@ import {
   MoveTaskResponse,
   MotionUser,
   MotionListUsersResponse,
-  MotionListWorkspacesResponse
+  MotionListWorkspacesResponse,
+  MotionListProjectsResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -38,6 +39,11 @@ export interface ListUsersParams {
 export interface ListWorkspacesParams {
   cursor?: string;
   ids?: string[];
+}
+
+export interface ListProjectsParams {
+  cursor?: string;
+  workspaceId?: string;
 }
 
 export class MotionClient {
@@ -154,6 +160,16 @@ export class MotionClient {
     }
 
     const endpoint = `/workspaces${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+    return this.makeRequest(endpoint);
+  }
+
+  async listProjects(params: ListProjectsParams = {}): Promise<MotionListProjectsResponse> {
+    const queryParams = new URLSearchParams();
+    
+    if (params.cursor) queryParams.append("cursor", params.cursor);
+    if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
+
+    const endpoint = `/projects${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
   }
 }

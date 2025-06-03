@@ -131,6 +131,29 @@ export interface MotionListWorkspacesResponse {
   };
 }
 
+export interface MotionProject {
+  id: string;
+  name: string;
+  description: string;
+  workspaceId: string;
+  status: {
+    name: string;
+    isDefaultStatus: boolean;
+    isResolvedStatus: boolean;
+  };
+  createdTime: string;
+  updatedTime: string;
+  customFieldValues?: Record<string, any>;
+}
+
+export interface MotionListProjectsResponse {
+  projects: MotionProject[];
+  meta: {
+    nextCursor?: string;
+    pageSize: number;
+  };
+}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {
