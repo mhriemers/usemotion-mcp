@@ -108,6 +108,29 @@ export interface MotionListUsersResponse {
   };
 }
 
+export interface MotionWorkspace {
+  id: string;
+  name: string;
+  teamId: string;
+  type: string;
+  labels: Array<{
+    name: string;
+  }>;
+  statuses: Array<{
+    name: string;
+    isDefaultStatus: boolean;
+    isResolvedStatus: boolean;
+  }>;
+}
+
+export interface MotionListWorkspacesResponse {
+  workspaces: MotionWorkspace[];
+  meta: {
+    nextCursor?: string;
+    pageSize: number;
+  };
+}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {
