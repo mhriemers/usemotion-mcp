@@ -9,6 +9,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - Create new tasks in Motion with full configuration support
 - Update existing tasks with partial updates
 - Move tasks between workspaces
+- Unassign tasks by removing the assignee
 - Delete tasks from Motion
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
@@ -169,6 +170,16 @@ Example response includes:
 - Task details with updated workspace information
 - New assignee if specified
 - All task properties reflecting the move
+
+#### unassign_motion_task
+
+Removes the assignee from a task.
+
+Required Parameters:
+- `taskId`: The ID of the task to unassign
+
+Example response:
+- Success message confirming the assignee was removed
 
 #### delete_motion_task
 

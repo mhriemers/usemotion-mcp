@@ -226,6 +226,36 @@ class MotionMCPServer {
       }
     );
 
+    // Unassign task tool
+    this.server.tool(
+      "unassign_motion_task",
+      {
+        taskId: z.string().describe("The ID of the task to unassign"),
+      },
+      async (params) => {
+        try {
+          await this.motionClient.unassignTask(params.taskId);
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Task ${params.taskId} unassigned successfully`,
+              },
+            ],
+          };
+        } catch (error) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+              },
+            ],
+          };
+        }
+      }
+    );
+
     // Delete task tool
     this.server.tool(
       "delete_motion_task",
