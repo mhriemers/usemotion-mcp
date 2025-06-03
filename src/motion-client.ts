@@ -3,7 +3,8 @@ import {
   CreateTaskRequest, 
   CreateTaskResponse,
   UpdateTaskRequest,
-  UpdateTaskResponse 
+  UpdateTaskResponse,
+  GetTaskResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -66,6 +67,11 @@ export class MotionClient {
     if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
 
     const endpoint = `/tasks${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+    return this.makeRequest(endpoint);
+  }
+
+  async getTask(taskId: string): Promise<GetTaskResponse> {
+    const endpoint = `/tasks/${taskId}`;
     return this.makeRequest(endpoint);
   }
 

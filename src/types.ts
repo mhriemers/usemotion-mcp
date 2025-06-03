@@ -85,6 +85,8 @@ export interface UpdateTaskRequest {
 
 export interface UpdateTaskResponse extends CreateTaskResponse {}
 
+export interface GetTaskResponse extends CreateTaskResponse {}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {

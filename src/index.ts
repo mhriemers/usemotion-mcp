@@ -63,6 +63,36 @@ class MotionMCPServer {
       }
     );
 
+    // Get task tool
+    this.server.tool(
+      "get_motion_task",
+      {
+        taskId: z.string().describe("The ID of the task to retrieve"),
+      },
+      async (params) => {
+        try {
+          const result = await this.motionClient.getTask(params.taskId);
+          return {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify(result, null, 2),
+              },
+            ],
+          };
+        } catch (error) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+              },
+            ],
+          };
+        }
+      }
+    );
+
     // Create task tool
     this.server.tool(
       "create_motion_task",

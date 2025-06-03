@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 ## Features
 
 - List tasks from Motion with various filtering options
+- Get individual task details by ID
 - Create new tasks in Motion with full configuration support
 - Update existing tasks with partial updates
 - Delete tasks from Motion
@@ -82,6 +83,20 @@ Example response includes:
 - Project and workspace details
 - Custom fields
 - Pagination metadata
+
+#### get_motion_task
+
+Retrieves a single task from Motion by its ID.
+
+Required Parameters:
+- `taskId`: The ID of the task to retrieve
+
+Example response includes:
+- Complete task details including all properties
+- Scheduling information (scheduled start/end times)
+- Custom field values
+- Project and workspace information
+- Assignee details
 
 #### create_motion_task
 
