@@ -27,6 +27,7 @@ export const registerListProjectsTool: ToolRegistrar = (server, client) => {
               text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
             },
           ],
+          isError: true,
         };
       }
     }

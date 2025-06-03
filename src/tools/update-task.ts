@@ -47,6 +47,7 @@ export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
               text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
             },
           ],
+          isError: true,
         };
       }
     }

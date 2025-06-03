@@ -87,7 +87,7 @@ export class MotionClient {
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`[Motion API] Error response body:`, errorText);
-      throw new Error(`Motion API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Motion API error: ${response.status} ${response.statusText}\n${errorText}`);
     }
 
     const responseData = await response.json();
