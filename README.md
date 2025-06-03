@@ -11,6 +11,8 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - Move tasks between workspaces
 - Unassign tasks by removing the assignee
 - Delete tasks from Motion
+- Get authenticated user information
+- List users in workspaces or teams
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
 
@@ -191,6 +193,30 @@ Required Parameters:
 Example response:
 - Success message confirming task deletion
 
+#### get_motion_user
+
+Retrieves information about the authenticated user (the owner of the API key).
+
+No parameters required.
+
+Example response includes:
+- User ID
+- User name
+- User email address
+
+#### list_motion_users
+
+Lists users for a given workspace or team with pagination support.
+
+Optional Parameters:
+- `cursor`: Pagination cursor for fetching next page
+- `teamId`: Filter users by team ID (returns all team members)
+- `workspaceId`: Filter users by workspace ID (returns all workspace members)
+
+Example response includes:
+- Array of user objects (id, name, email)
+- Pagination metadata (nextCursor, pageSize)
+
 ### Integration with MCP Clients
 
 To use this server with an MCP client (like Claude Desktop), add the following to your MCP configuration:
@@ -228,7 +254,9 @@ usemotion-mcp/
 │       ├── update-task.ts
 │       ├── move-task.ts
 │       ├── unassign-task.ts
-│       └── delete-task.ts
+│       ├── delete-task.ts
+│       ├── get-user.ts
+│       └── list-users.ts
 ├── dist/               # Compiled JavaScript (generated)
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration

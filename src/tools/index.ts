@@ -7,6 +7,8 @@ import { registerUpdateTaskTool } from "./update-task.js";
 import { registerMoveTaskTool } from "./move-task.js";
 import { registerUnassignTaskTool } from "./unassign-task.js";
 import { registerDeleteTaskTool } from "./delete-task.js";
+import { registerGetUserTool } from "./get-user.js";
+import { registerListUsersTool } from "./list-users.js";
 
 export function registerAllTools(server: McpServer, client: MotionClient) {
   registerListTasksTool(server, client);
@@ -16,4 +18,6 @@ export function registerAllTools(server: McpServer, client: MotionClient) {
   registerMoveTaskTool(server, client);
   registerUnassignTaskTool(server, client);
   registerDeleteTaskTool(server, client);
+  registerGetUserTool(server, client);
+  registerListUsersTool(server, client);
 }

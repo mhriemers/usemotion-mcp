@@ -94,6 +94,20 @@ export interface MoveTaskRequest {
 
 export interface MoveTaskResponse extends CreateTaskResponse {}
 
+export interface MotionUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface MotionListUsersResponse {
+  users: MotionUser[];
+  meta: {
+    nextCursor?: string;
+    pageSize: number;
+  };
+}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {

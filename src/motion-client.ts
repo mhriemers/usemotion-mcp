@@ -6,7 +6,9 @@ import {
   UpdateTaskResponse,
   GetTaskResponse,
   MoveTaskRequest,
-  MoveTaskResponse
+  MoveTaskResponse,
+  MotionUser,
+  MotionListUsersResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -23,6 +25,12 @@ export interface ListTasksParams {
   name?: string;
   projectId?: string;
   status?: string;
+  workspaceId?: string;
+}
+
+export interface ListUsersParams {
+  cursor?: string;
+  teamId?: string;
   workspaceId?: string;
 }
 
@@ -113,5 +121,21 @@ export class MotionClient {
     await this.makeRequest(endpoint, {
       method: "DELETE",
     });
+  }
+
+  async getUser(): Promise<MotionUser> {
+    const endpoint = "/users/me";
+    return this.makeRequest(endpoint);
+  }
+
+  async listUsers(params: ListUsersParams = {}): Promise<MotionListUsersResponse> {
+    const queryParams = new URLSearchParams();
+    
+    if (params.cursor) queryParams.append("cursor", params.cursor);
+    if (params.teamId) queryParams.append("teamId", params.teamId);
+    if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
+
+    const endpoint = `/users${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+    return this.makeRequest(endpoint);
   }
 }
