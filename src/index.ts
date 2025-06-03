@@ -4,6 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import { MotionListTasksResponse } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
 
@@ -130,7 +131,7 @@ class MotionMCPServer {
           const endpoint = `/tasks${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
           
           try {
-            const result = await this.makeMotionRequest(endpoint);
+            const result: MotionListTasksResponse = await this.makeMotionRequest(endpoint);
             return {
               content: [
                 {
