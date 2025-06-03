@@ -216,9 +216,19 @@ To use this server with an MCP client (like Claude Desktop), add the following t
 ```
 usemotion-mcp/
 ├── src/
-│   ├── index.ts        # Main server implementation with tools
+│   ├── index.ts        # Main server implementation
 │   ├── motion-client.ts # Motion API client
-│   └── types.ts        # TypeScript type definitions
+│   ├── types.ts        # TypeScript type definitions
+│   └── tools/          # Tool implementations
+│       ├── index.ts    # Tool registry
+│       ├── types.ts    # Tool type definitions
+│       ├── list-tasks.ts
+│       ├── get-task.ts
+│       ├── create-task.ts
+│       ├── update-task.ts
+│       ├── move-task.ts
+│       ├── unassign-task.ts
+│       └── delete-task.ts
 ├── dist/               # Compiled JavaScript (generated)
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration
@@ -232,7 +242,9 @@ To add new Motion API endpoints as MCP tools:
 
 1. Add type definitions in `src/types.ts` for the API request/response
 2. Add a method to the `MotionClient` class in `src/motion-client.ts`
-3. Add the tool in `src/index.ts` using the `server.tool()` method with Zod validation
+3. Create a new tool file in `src/tools/` directory
+4. Export the tool registration function from `src/tools/index.ts`
+5. The tool will be automatically registered when the server starts
 
 ## API Reference
 
