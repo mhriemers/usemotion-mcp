@@ -4,7 +4,9 @@ import {
   CreateTaskResponse,
   UpdateTaskRequest,
   UpdateTaskResponse,
-  GetTaskResponse
+  GetTaskResponse,
+  MoveTaskRequest,
+  MoveTaskResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -85,6 +87,14 @@ export class MotionClient {
 
   async updateTask(taskId: string, params: UpdateTaskRequest): Promise<UpdateTaskResponse> {
     const endpoint = `/tasks/${taskId}`;
+    return this.makeRequest(endpoint, {
+      method: "PATCH",
+      body: JSON.stringify(params),
+    });
+  }
+
+  async moveTask(taskId: string, params: MoveTaskRequest): Promise<MoveTaskResponse> {
+    const endpoint = `/tasks/${taskId}/move`;
     return this.makeRequest(endpoint, {
       method: "PATCH",
       body: JSON.stringify(params),

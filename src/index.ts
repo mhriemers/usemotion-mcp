@@ -192,6 +192,40 @@ class MotionMCPServer {
       }
     );
 
+    // Move task tool
+    this.server.tool(
+      "move_motion_task",
+      {
+        taskId: z.string().describe("The ID of the task to move"),
+        workspaceId: z.string().describe("The ID of the workspace to move the task to"),
+        assigneeId: z.string().optional().describe("Optional: The user ID to assign the task to in the new workspace"),
+      },
+      async (params) => {
+        const { taskId, ...moveParams } = params;
+        
+        try {
+          const result = await this.motionClient.moveTask(taskId, moveParams);
+          return {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify(result, null, 2),
+              },
+            ],
+          };
+        } catch (error) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `Error: ${error instanceof Error ? error.message : "Unknown error"}`,
+              },
+            ],
+          };
+        }
+      }
+    );
+
     // Delete task tool
     this.server.tool(
       "delete_motion_task",

@@ -87,6 +87,13 @@ export interface UpdateTaskResponse extends CreateTaskResponse {}
 
 export interface GetTaskResponse extends CreateTaskResponse {}
 
+export interface MoveTaskRequest {
+  workspaceId: string;
+  assigneeId?: string;
+}
+
+export interface MoveTaskResponse extends CreateTaskResponse {}
+
 export interface MotionListTasksResponse {
   tasks: MotionTask[];
   meta: {

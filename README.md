@@ -8,6 +8,7 @@ A Model Context Protocol (MCP) server for integrating with Motion (usemotion.com
 - Get individual task details by ID
 - Create new tasks in Motion with full configuration support
 - Update existing tasks with partial updates
+- Move tasks between workspaces
 - Delete tasks from Motion
 - Built with TypeScript and the official MCP SDK
 - Supports pagination for large task lists
@@ -152,6 +153,22 @@ Example response includes:
 - Updated task with all current properties
 - Scheduling information if auto-scheduled
 - Custom field values if applicable
+
+#### move_motion_task
+
+Moves a task to a different workspace.
+
+Required Parameters:
+- `taskId`: The ID of the task to move
+- `workspaceId`: The ID of the workspace to move the task to
+
+Optional Parameters:
+- `assigneeId`: User ID to assign the task to in the new workspace
+
+Example response includes:
+- Task details with updated workspace information
+- New assignee if specified
+- All task properties reflecting the move
 
 #### delete_motion_task
 

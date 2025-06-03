@@ -31,7 +31,7 @@ This is a Model Context Protocol (MCP) server that integrates with Motion's API 
    - Adds the required `X-API-Key` header from the `MOTION_API_KEY` environment variable
    - Prepends the base URL `https://api.usemotion.com/v1` to endpoints
    - Handles error responses uniformly
-   - Provides typed methods for each API endpoint (e.g., `listTasks`, `getTask`, `createTask`, `updateTask`, `deleteTask`)
+   - Provides typed methods for each API endpoint (e.g., `listTasks`, `getTask`, `createTask`, `updateTask`, `moveTask`, `deleteTask`)
 
 3. **Tool Implementation Pattern**: Tools are registered directly with the server using the `server.tool()` method:
    - Each tool uses Zod schemas for input validation
