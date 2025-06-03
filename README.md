@@ -98,6 +98,16 @@ To use this server with an MCP client (like Claude Desktop), add the following t
 }
 ```
 
+## Testing
+
+To test the server is working correctly:
+
+```bash
+npm test
+```
+
+This will start the server and verify it can initialize properly. Make sure your `MOTION_API_KEY` is set before running the test.
+
 ## Development
 
 ### Project Structure
@@ -105,10 +115,12 @@ To use this server with an MCP client (like Claude Desktop), add the following t
 ```
 usemotion-mcp/
 ├── src/
-│   └── index.ts        # Main server implementation
+│   ├── index.ts        # Main server implementation
+│   └── types.ts        # TypeScript type definitions
 ├── dist/               # Compiled JavaScript (generated)
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration
+├── test-server.js      # Server test script
 ├── .env.example        # Example environment configuration
 └── README.md          # This file
 ```
