@@ -165,7 +165,7 @@ describe('MotionMCPServer', () => {
 
     // Connect server and client
     await Promise.all([
-      server.run(serverTransport),
+      server.connect(serverTransport),
       client.connect(clientTransport),
     ]);
   });

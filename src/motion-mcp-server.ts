@@ -18,7 +18,7 @@ export class MotionMCPServer {
     registerAllTools(this.server, this.motionClient);
   }
 
-  async run(transport: Transport) {
+  async connect(transport: Transport) {
     await this.server.connect(transport);
   }
 }

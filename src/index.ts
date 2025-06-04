@@ -13,5 +13,5 @@ if (!apiKey) {
 
 const server = new MotionMCPServer(apiKey);
 const transport = new StdioServerTransport();
-server.run(transport).catch(console.error);
+server.connect(transport).catch(console.error);
 console.error("Motion MCP server running on stdio");
