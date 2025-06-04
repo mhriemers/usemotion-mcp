@@ -125,6 +125,32 @@ describe('MotionMCPServer', () => {
   };
 
   beforeEach(async () => {
+    // Reset all mocks before each test
+    jest.clearAllMocks();
+    
+    // Create a mock instance with all required methods
+    const mockInstance = {
+      listTasks: jest.fn(),
+      getTask: jest.fn(),
+      createTask: jest.fn(),
+      updateTask: jest.fn(),
+      moveTask: jest.fn(),
+      unassignTask: jest.fn(),
+      deleteTask: jest.fn(),
+      getUser: jest.fn(),
+      listUsers: jest.fn(),
+      listWorkspaces: jest.fn(),
+      listProjects: jest.fn(),
+      getProject: jest.fn(),
+      createProject: jest.fn(),
+      getSchedules: jest.fn(),
+      getStatuses: jest.fn(),
+    } as unknown as jest.Mocked<MotionClient>;
+
+    // Mock the MotionClient constructor to return our mock instance
+    MockedMotionClient.mockImplementation(() => mockInstance);
+    mockMotionClient = mockInstance;
+
     // Create linked transport pair
     [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
@@ -136,9 +162,6 @@ describe('MotionMCPServer', () => {
       name: 'test-client',
       version: '1.0.0',
     });
-
-    // Get the mocked MotionClient instance
-    mockMotionClient = MockedMotionClient.mock.instances[0] as jest.Mocked<MotionClient>;
 
     // Connect server and client
     await Promise.all([
@@ -242,7 +265,8 @@ describe('MotionMCPServer', () => {
           arguments: {}
         });
 
-        expect((result.content[0] as any).text).toContain('Error: API Error');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('Error: API Error');
         expect(result.isError).toBe(true);
       });
     });
@@ -259,7 +283,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.getTask).toHaveBeenCalledWith('task-123');
-        expect((result.content[0] as any).text).toContain('task-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('task-123');
       });
 
       it('should handle invalid task ID', async () => {
@@ -273,7 +298,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(result.isError).toBe(true);
-        expect((result.content[0] as any).text).toContain('Error: Task not found');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('Error: Task not found');
       });
     });
 
@@ -288,11 +314,12 @@ describe('MotionMCPServer', () => {
 
         const result = await client.callTool({
           name: 'create_motion_task',
-          arguments: createRequest
+          arguments: createRequest as unknown as Record<string, unknown>
         });
 
         expect(mockMotionClient.createTask).toHaveBeenCalledWith(createRequest);
-        expect((result.content[0] as any).text).toContain('task-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('task-123');
       });
 
       it('should create task with all parameters', async () => {
@@ -318,7 +345,7 @@ describe('MotionMCPServer', () => {
 
         await client.callTool({
           name: 'create_motion_task',
-          arguments: createRequest
+          arguments: createRequest as unknown as Record<string, unknown>
         });
 
         expect(mockMotionClient.createTask).toHaveBeenCalledWith(createRequest);
@@ -357,7 +384,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.updateTask).toHaveBeenCalledWith('task-123', updateRequest);
-        expect((result.content[0] as any).text).toContain('task-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('task-123');
       });
     });
 
@@ -379,7 +407,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.moveTask).toHaveBeenCalledWith('task-123', moveRequest);
-        expect((result.content[0] as any).text).toContain('task-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('task-123');
       });
     });
 
@@ -395,7 +424,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.unassignTask).toHaveBeenCalledWith('task-123');
-        expect((result.content[0] as any).text).toContain('successfully unassigned');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('unassigned successfully');
       });
     });
 
@@ -411,7 +441,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.deleteTask).toHaveBeenCalledWith('task-123');
-        expect((result.content[0] as any).text).toContain('successfully deleted');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('deleted successfully');
       });
     });
   });
@@ -427,7 +458,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.getUser).toHaveBeenCalled();
-        expect((result.content[0] as any).text).toContain('user-1');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('user-1');
       });
     });
 
@@ -444,7 +476,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.listUsers).toHaveBeenCalledWith({});
-        expect((result.content[0] as any).text).toContain('user-1');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('user-1');
       });
 
       it('should list users with filtering', async () => {
@@ -485,11 +518,17 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.listWorkspaces).toHaveBeenCalledWith({});
-        expect((result.content[0] as any).text).toContain('workspace-1');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('workspace-1');
       });
 
       it('should list workspaces with expansion', async () => {
-        await client.callTool({
+        mockMotionClient.listWorkspaces.mockResolvedValue({
+          workspaces: [mockWorkspace],
+          meta: { pageSize: 1 },
+        });
+
+        const result = await client.callTool({
           name: 'list_motion_workspaces',
           arguments: {
             ids: ['workspace-1', 'workspace-2'],
@@ -501,6 +540,8 @@ describe('MotionMCPServer', () => {
           ids: ['workspace-1', 'workspace-2'],
           cursor: 'next-page',
         });
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('workspace-1');
       });
     });
   });
@@ -519,7 +560,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.listProjects).toHaveBeenCalledWith({});
-        expect((result.content[0] as any).text).toContain('project-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('project-123');
       });
     });
 
@@ -535,7 +577,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.getProject).toHaveBeenCalledWith('project-123');
-        expect((result.content[0] as any).text).toContain('project-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('project-123');
       });
     });
 
@@ -553,11 +596,12 @@ describe('MotionMCPServer', () => {
 
         const result = await client.callTool({
           name: 'create_motion_project',
-          arguments: createRequest
+          arguments: createRequest as unknown as Record<string, unknown>
         });
 
         expect(mockMotionClient.createProject).toHaveBeenCalledWith(createRequest);
-        expect((result.content[0] as any).text).toContain('project-123');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('project-123');
       });
     });
   });
@@ -573,7 +617,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.getSchedules).toHaveBeenCalled();
-        expect((result.content[0] as any).text).toContain('Default Schedule');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('Default Schedule');
       });
     });
 
@@ -589,7 +634,8 @@ describe('MotionMCPServer', () => {
         });
 
         expect(mockMotionClient.getStatuses).toHaveBeenCalledWith('workspace-1');
-        expect((result.content[0] as any).text).toContain('In Progress');
+        const content = result.content as Array<{type: string, text: string}>;
+        expect(content[0].text).toContain('In Progress');
       });
     });
   });
@@ -604,7 +650,8 @@ describe('MotionMCPServer', () => {
       });
 
       expect(result.isError).toBe(true);
-      expect((result.content[0] as any).text).toContain('Error: Network error');
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].text).toContain('Error: Network error');
     });
 
     it('should handle unknown errors', async () => {
@@ -616,7 +663,8 @@ describe('MotionMCPServer', () => {
       });
 
       expect(result.isError).toBe(true);
-      expect((result.content[0] as any).text).toContain('Error: Unknown error');
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].text).toContain('Error: Unknown error');
     });
 
     it('should handle API responses with missing data', async () => {
@@ -630,7 +678,8 @@ describe('MotionMCPServer', () => {
         arguments: {}
       });
 
-      expect((result.content[0] as any).text).toContain('[]');
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].text).toContain('[]');
     });
   });
 
@@ -648,17 +697,21 @@ describe('MotionMCPServer', () => {
 
     it('should validate enum parameters', async () => {
       // This would be caught by Zod validation at the tool level
-      await client.callTool({
+      mockMotionClient.createTask.mockResolvedValue({ ...mockTask, ...mockTaskResponse });
+      
+      const result = await client.callTool({
         name: 'create_motion_task',
         arguments: {
           name: 'Test Task',
           workspaceId: 'workspace-1',
           priority: 'INVALID_PRIORITY',
-        }
+        } as unknown as Record<string, unknown>
       });
 
       // The tool should still call the client, but Motion API might reject it
       expect(mockMotionClient.createTask).toHaveBeenCalled();
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].text).toContain('task-123');
     });
   });
 
@@ -671,11 +724,12 @@ describe('MotionMCPServer', () => {
         arguments: {}
       });
 
-      expect((result.content[0] as any).type).toBe('text');
-      expect((result.content[0] as any).text).toMatch(/^\{.*\}$/);
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].type).toBe('text');
+      expect(content[0].text).toMatch(/^\{[\s\S]*}$/);
 
       // Verify it's valid JSON
-      const parsed = JSON.parse((result.content[0] as any).text);
+      const parsed = JSON.parse(content[0].text);
       expect(parsed).toEqual(expect.objectContaining({
         id: mockUser.id,
         name: mockUser.name,
@@ -694,8 +748,9 @@ describe('MotionMCPServer', () => {
       });
 
       expect(result.isError).toBe(true);
-      expect((result.content[0] as any).type).toBe('text');
-      expect((result.content[0] as any).text).toBe('Error: Task not found');
+      const content = result.content as Array<{type: string, text: string}>;
+      expect(content[0].type).toBe('text');
+      expect(content[0].text).toBe('Error: Task not found');
     });
   });
 });
