@@ -195,7 +195,9 @@ describe("MotionMCPServer", () => {
 
     it("should have all tools registered", async () => {
       const toolsResult = await client.listTools();
-      const toolNames = toolsResult.tools.map((tool: {name: string}) => tool.name);
+      const toolNames = toolsResult.tools.map(
+        (tool: { name: string }) => tool.name,
+      );
 
       expect(toolNames).toContain("list_motion_tasks");
       expect(toolNames).toContain("get_motion_task");

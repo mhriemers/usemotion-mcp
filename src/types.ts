@@ -4,7 +4,10 @@ export type CustomFieldNumber = { type: "number"; value: number | null };
 export type CustomFieldUrl = { type: "url"; value: string | null };
 export type CustomFieldDate = { type: "date"; value: string | null };
 export type CustomFieldSelect = { type: "select"; value: string | null };
-export type CustomFieldMultiSelect = { type: "multiSelect"; value: string[] | null };
+export type CustomFieldMultiSelect = {
+  type: "multiSelect";
+  value: string[] | null;
+};
 export type CustomFieldPerson = {
   type: "person";
   value: { id: string; name: string; email: string } | null;
