@@ -29,6 +29,6 @@ export const registerGetTaskTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

@@ -7,7 +7,10 @@ export const registerListUsersTool: ToolRegistrar = (server, client) => {
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
       teamId: z.string().optional().describe("Filter users by team ID"),
-      workspaceId: z.string().optional().describe("Filter users by workspace ID"),
+      workspaceId: z
+        .string()
+        .optional()
+        .describe("Filter users by workspace ID"),
     },
     async (params) => {
       try {
@@ -31,6 +34,6 @@ export const registerListUsersTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

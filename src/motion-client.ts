@@ -1,6 +1,6 @@
-import { 
-  MotionListTasksResponse, 
-  CreateTaskRequest, 
+import {
+  MotionListTasksResponse,
+  CreateTaskRequest,
   CreateTaskResponse,
   UpdateTaskRequest,
   UpdateTaskResponse,
@@ -15,7 +15,7 @@ import {
   CreateProjectResponse,
   GetProjectResponse,
   MotionSchedulesResponse,
-  MotionStatusesResponse
+  MotionStatusesResponse,
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -60,7 +60,7 @@ export class MotionClient {
 
   private async makeRequest(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<any> {
     const url = `${MOTION_API_BASE_URL}${endpoint}`;
     const requestOptions = {
@@ -72,45 +72,68 @@ export class MotionClient {
       },
     };
 
-    console.error(`[Motion API] ${requestOptions.method || 'GET'} ${url}`);
-    console.error(`[Motion API] Request headers:`, JSON.stringify({
-      ...requestOptions.headers,
-      "X-API-Key": "[REDACTED]"
-    }, null, 2));
+    console.error(`[Motion API] ${requestOptions.method || "GET"} ${url}`);
+    console.error(
+      `[Motion API] Request headers:`,
+      JSON.stringify(
+        {
+          ...requestOptions.headers,
+          "X-API-Key": "[REDACTED]",
+        },
+        null,
+        2,
+      ),
+    );
     if (requestOptions.body) {
       console.error(`[Motion API] Request body:`, requestOptions.body);
     }
 
     const response = await fetch(url, requestOptions);
 
-    console.error(`[Motion API] Response status: ${response.status} ${response.statusText}`);
-    console.error(`[Motion API] Response headers:`, JSON.stringify(Object.fromEntries(response.headers), null, 2));
+    console.error(
+      `[Motion API] Response status: ${response.status} ${response.statusText}`,
+    );
+    console.error(
+      `[Motion API] Response headers:`,
+      JSON.stringify(Object.fromEntries(response.headers), null, 2),
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`[Motion API] Error response body:`, errorText);
-      throw new Error(`Motion API error: ${response.status} ${response.statusText}\n${errorText}`);
+      throw new Error(
+        `Motion API error: ${response.status} ${response.statusText}\n${errorText}`,
+      );
     }
 
     const responseData = await response.json();
-    console.error(`[Motion API] Response body:`, JSON.stringify(responseData, null, 2));
+    console.error(
+      `[Motion API] Response body:`,
+      JSON.stringify(responseData, null, 2),
+    );
 
     return responseData;
   }
 
-  async listTasks(params: ListTasksParams = {}): Promise<MotionListTasksResponse> {
+  async listTasks(
+    params: ListTasksParams = {},
+  ): Promise<MotionListTasksResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.assigneeId) queryParams.append("assigneeId", params.assigneeId);
     if (params.cursor) queryParams.append("cursor", params.cursor);
     if (params.includeAllStatuses !== undefined) {
-      queryParams.append("includeAllStatuses", params.includeAllStatuses.toString());
+      queryParams.append(
+        "includeAllStatuses",
+        params.includeAllStatuses.toString(),
+      );
     }
     if (params.label) queryParams.append("label", params.label);
     if (params.name) queryParams.append("name", params.name);
     if (params.projectId) queryParams.append("projectId", params.projectId);
     if (params.status) queryParams.append("status", params.status);
-    if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
+    if (params.workspaceId)
+      queryParams.append("workspaceId", params.workspaceId);
 
     const endpoint = `/tasks${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
@@ -129,7 +152,10 @@ export class MotionClient {
     });
   }
 
-  async updateTask(taskId: string, params: UpdateTaskRequest): Promise<UpdateTaskResponse> {
+  async updateTask(
+    taskId: string,
+    params: UpdateTaskRequest,
+  ): Promise<UpdateTaskResponse> {
     const endpoint = `/tasks/${taskId}`;
     return this.makeRequest(endpoint, {
       method: "PATCH",
@@ -137,7 +163,10 @@ export class MotionClient {
     });
   }
 
-  async moveTask(taskId: string, params: MoveTaskRequest): Promise<MoveTaskResponse> {
+  async moveTask(
+    taskId: string,
+    params: MoveTaskRequest,
+  ): Promise<MoveTaskResponse> {
     const endpoint = `/tasks/${taskId}/move`;
     return this.makeRequest(endpoint, {
       method: "PATCH",
@@ -164,34 +193,42 @@ export class MotionClient {
     return this.makeRequest(endpoint);
   }
 
-  async listUsers(params: ListUsersParams = {}): Promise<MotionListUsersResponse> {
+  async listUsers(
+    params: ListUsersParams = {},
+  ): Promise<MotionListUsersResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.cursor) queryParams.append("cursor", params.cursor);
     if (params.teamId) queryParams.append("teamId", params.teamId);
-    if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
+    if (params.workspaceId)
+      queryParams.append("workspaceId", params.workspaceId);
 
     const endpoint = `/users${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
   }
 
-  async listWorkspaces(params: ListWorkspacesParams = {}): Promise<MotionListWorkspacesResponse> {
+  async listWorkspaces(
+    params: ListWorkspacesParams = {},
+  ): Promise<MotionListWorkspacesResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.cursor) queryParams.append("cursor", params.cursor);
     if (params.ids) {
-      params.ids.forEach(id => queryParams.append("ids", id));
+      params.ids.forEach((id) => queryParams.append("ids", id));
     }
 
     const endpoint = `/workspaces${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
   }
 
-  async listProjects(params: ListProjectsParams = {}): Promise<MotionListProjectsResponse> {
+  async listProjects(
+    params: ListProjectsParams = {},
+  ): Promise<MotionListProjectsResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.cursor) queryParams.append("cursor", params.cursor);
-    if (params.workspaceId) queryParams.append("workspaceId", params.workspaceId);
+    if (params.workspaceId)
+      queryParams.append("workspaceId", params.workspaceId);
 
     const endpoint = `/projects${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
@@ -202,7 +239,9 @@ export class MotionClient {
     return this.makeRequest(endpoint);
   }
 
-  async createProject(params: CreateProjectRequest): Promise<CreateProjectResponse> {
+  async createProject(
+    params: CreateProjectRequest,
+  ): Promise<CreateProjectResponse> {
     const endpoint = "/projects";
     return this.makeRequest(endpoint, {
       method: "POST",
@@ -218,7 +257,7 @@ export class MotionClient {
   async getStatuses(workspaceId: string): Promise<MotionStatusesResponse> {
     const queryParams = new URLSearchParams();
     queryParams.append("workspaceId", workspaceId);
-    
+
     const endpoint = `/statuses?${queryParams.toString()}`;
     return this.makeRequest(endpoint);
   }

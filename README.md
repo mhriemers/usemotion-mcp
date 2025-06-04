@@ -28,6 +28,7 @@ npm run build
 ```
 
 Set up your environment:
+
 ```bash
 cp .env.example .env
 # Edit .env and add your MOTION_API_KEY
@@ -66,6 +67,7 @@ Add to your MCP client configuration (e.g., Claude Desktop):
 ## Available Tools
 
 ### Task Management
+
 - `list_motion_tasks` - List tasks with filtering options
 - `get_motion_task` - Get task details by ID
 - `create_motion_task` - Create new tasks
@@ -75,16 +77,19 @@ Add to your MCP client configuration (e.g., Claude Desktop):
 - `delete_motion_task` - Delete tasks
 
 ### User & Workspace Management
+
 - `get_motion_user` - Get authenticated user info
 - `list_motion_users` - List users in workspaces/teams
 - `list_motion_workspaces` - List accessible workspaces
 
 ### Project Management
+
 - `list_motion_projects` - List projects in workspaces
 - `get_motion_project` - Get project details by ID
 - `create_motion_project` - Create new projects
 
 ### Schedule Management
+
 - `get_motion_schedules` - Get schedules with availability
 
 Each tool accepts specific parameters and returns detailed responses. Use the tools with appropriate parameters based on your needs.

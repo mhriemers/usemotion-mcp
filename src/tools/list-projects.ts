@@ -6,7 +6,10 @@ export const registerListProjectsTool: ToolRegistrar = (server, client) => {
     "list_motion_projects",
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
-      workspaceId: z.string().optional().describe("Filter projects by workspace ID"),
+      workspaceId: z
+        .string()
+        .optional()
+        .describe("Filter projects by workspace ID"),
     },
     async (params) => {
       try {
@@ -30,6 +33,6 @@ export const registerListProjectsTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

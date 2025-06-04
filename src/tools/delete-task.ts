@@ -29,6 +29,6 @@ export const registerDeleteTaskTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

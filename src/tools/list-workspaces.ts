@@ -6,7 +6,10 @@ export const registerListWorkspacesTool: ToolRegistrar = (server, client) => {
     "list_motion_workspaces",
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
-      ids: z.array(z.string()).optional().describe("Expand details of specific workspace IDs"),
+      ids: z
+        .array(z.string())
+        .optional()
+        .describe("Expand details of specific workspace IDs"),
     },
     async (params) => {
       try {
@@ -30,6 +33,6 @@ export const registerListWorkspacesTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

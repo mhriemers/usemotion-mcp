@@ -29,6 +29,6 @@ export const registerGetProjectTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

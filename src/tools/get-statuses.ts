@@ -29,6 +29,6 @@ export const registerGetStatusesTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

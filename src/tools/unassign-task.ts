@@ -29,6 +29,6 @@ export const registerUnassignTaskTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };

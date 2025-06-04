@@ -6,12 +6,19 @@ export const registerMoveTaskTool: ToolRegistrar = (server, client) => {
     "move_motion_task",
     {
       taskId: z.string().describe("The ID of the task to move"),
-      workspaceId: z.string().describe("The ID of the workspace to move the task to"),
-      assigneeId: z.string().optional().describe("Optional: The user ID to assign the task to in the new workspace"),
+      workspaceId: z
+        .string()
+        .describe("The ID of the workspace to move the task to"),
+      assigneeId: z
+        .string()
+        .optional()
+        .describe(
+          "Optional: The user ID to assign the task to in the new workspace",
+        ),
     },
     async (params) => {
       const { taskId, ...moveParams } = params;
-      
+
       try {
         const result = await client.moveTask(taskId, moveParams);
         return {
@@ -33,6 +40,6 @@ export const registerMoveTaskTool: ToolRegistrar = (server, client) => {
           isError: true,
         };
       }
-    }
+    },
   );
 };
