@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
 
 export const registerGetSchedulesTool: ToolRegistrar = (server, client) => {
