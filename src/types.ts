@@ -183,3 +183,27 @@ export interface MotionListTasksResponse {
     pageSize: number;
   };
 }
+
+export interface ScheduleTimeBlock {
+  start: string;
+  end: string;
+}
+
+export interface ScheduleDetails {
+  monday?: ScheduleTimeBlock[];
+  tuesday?: ScheduleTimeBlock[];
+  wednesday?: ScheduleTimeBlock[];
+  thursday?: ScheduleTimeBlock[];
+  friday?: ScheduleTimeBlock[];
+  saturday?: ScheduleTimeBlock[];
+  sunday?: ScheduleTimeBlock[];
+}
+
+export interface MotionSchedule {
+  name: string;
+  isDefaultTimezone: boolean;
+  timezone: string;
+  schedule: ScheduleDetails;
+}
+
+export type MotionSchedulesResponse = MotionSchedule[];

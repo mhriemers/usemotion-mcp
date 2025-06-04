@@ -13,7 +13,8 @@ import {
   MotionListProjectsResponse,
   CreateProjectRequest,
   CreateProjectResponse,
-  GetProjectResponse
+  GetProjectResponse,
+  MotionSchedulesResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -206,5 +207,10 @@ export class MotionClient {
       method: "POST",
       body: JSON.stringify(params),
     });
+  }
+
+  async getSchedules(): Promise<MotionSchedulesResponse> {
+    const endpoint = "/schedules";
+    return this.makeRequest(endpoint);
   }
 }
