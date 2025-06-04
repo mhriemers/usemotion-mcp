@@ -106,6 +106,12 @@ export class MotionClient {
       );
     }
 
+    // Check if the response has content (not 204 No Content)
+    if (response.status === 204) {
+      console.error(`[Motion API] No content response`);
+      return undefined as Response;
+    }
+
     const responseData = await response.json();
     console.error(
       `[Motion API] Response body:`,
