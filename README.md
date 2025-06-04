@@ -357,7 +357,9 @@ This server implements tools based on the [Motion API documentation](https://doc
 
 ## License
 
-ISC
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+Copyright 2025 Martijn Riemers
 
 ## Contributing
 

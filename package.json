@@ -13,8 +13,8 @@
     "url": "git+https://github.com/mhriemers/usemotion-mcp.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Martijn Riemers",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/mhriemers/usemotion-mcp/issues"
   },
