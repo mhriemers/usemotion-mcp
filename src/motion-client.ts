@@ -58,10 +58,10 @@ export class MotionClient {
     this.config = config;
   }
 
-  private async makeRequest(
+  private async makeRequest<Response>(
     endpoint: string,
     options: RequestInit = {},
-  ): Promise<any> {
+  ): Promise<Response> {
     const url = `${MOTION_API_BASE_URL}${endpoint}`;
     const requestOptions = {
       ...options,
@@ -112,7 +112,7 @@ export class MotionClient {
       JSON.stringify(responseData, null, 2),
     );
 
-    return responseData;
+    return responseData as Response;
   }
 
   async listTasks(

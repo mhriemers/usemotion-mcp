@@ -7,8 +7,8 @@ on:
     branches: ["main"]
 
 jobs:
-  format:
-    name: Format
+  format-lint:
+    name: Format and Lint (Node.js 20.x)
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Check formatting
         run: npm run format:check
+
+      - name: Run linting
+        run: npm run lint
 
   build-test:
     name: Build and Test (Node.js ${{ matrix.node-version }})
