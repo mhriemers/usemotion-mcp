@@ -80,3 +80,7 @@ When implementing new Motion API endpoints:
 - All API endpoints are prefixed with `/v1`
 - The API uses standard HTTP status codes and returns JSON responses
 - Pagination is handled via `cursor` and `nextCursor` in responses
+
+## Development Best Practices
+
+- Commit often using conventional commits. Use feature branches.
