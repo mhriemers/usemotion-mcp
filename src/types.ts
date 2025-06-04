@@ -207,3 +207,11 @@ export interface MotionSchedule {
 }
 
 export type MotionSchedulesResponse = MotionSchedule[];
+
+export interface MotionStatus {
+  name: string;
+  isDefaultStatus: boolean;
+  isResolvedStatus: boolean;
+}
+
+export type MotionStatusesResponse = MotionStatus[];

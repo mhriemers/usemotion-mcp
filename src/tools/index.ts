@@ -14,6 +14,7 @@ import { registerListProjectsTool } from "./list-projects.js";
 import { registerGetProjectTool } from "./get-project.js";
 import { registerCreateProjectTool } from "./create-project.js";
 import { registerGetSchedulesTool } from "./get-schedules.js";
+import { registerGetStatusesTool } from "./get-statuses.js";
 
 export function registerAllTools(server: McpServer, client: MotionClient) {
   registerListTasksTool(server, client);
@@ -30,4 +31,5 @@ export function registerAllTools(server: McpServer, client: MotionClient) {
   registerGetProjectTool(server, client);
   registerCreateProjectTool(server, client);
   registerGetSchedulesTool(server, client);
+  registerGetStatusesTool(server, client);
 }
