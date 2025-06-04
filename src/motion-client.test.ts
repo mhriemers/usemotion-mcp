@@ -34,7 +34,7 @@ describe("MotionClient", () => {
   describe("makeRequest", () => {
     it("should add required headers to requests", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify({ test: "data" }), { status: 200 })
+        new Response(JSON.stringify({ test: "data" }), { status: 200 }),
       );
 
       await client.listTasks();
@@ -46,24 +46,24 @@ describe("MotionClient", () => {
             "X-API-Key": "test-api-key",
             "Content-Type": "application/json",
           }),
-        })
+        }),
       );
     });
 
     it("should throw an error for non-ok responses", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response("Bad Request", { status: 400, statusText: "Bad Request" })
+        new Response("Bad Request", { status: 400, statusText: "Bad Request" }),
       );
 
       await expect(client.listTasks()).rejects.toThrow(
-        "Motion API error: 400 Bad Request\nBad Request"
+        "Motion API error: 400 Bad Request\nBad Request",
       );
     });
 
     it("should parse JSON responses", async () => {
       const responseData = { test: "data" };
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(responseData), { status: 200 })
+        new Response(JSON.stringify(responseData), { status: 200 }),
       );
 
       const result = await client.listTasks();
@@ -81,14 +81,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.listTasks();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/tasks",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -102,7 +102,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const params = {
@@ -130,7 +130,7 @@ describe("MotionClient", () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         expectedUrl.toString(),
-        expect.any(Object)
+        expect.any(Object),
       );
     });
   });
@@ -144,14 +144,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockTask), { status: 200 })
+        new Response(JSON.stringify(mockTask), { status: 200 }),
       );
 
       const result = await client.getTask("task-123");
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/tasks/task-123",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockTask);
     });
@@ -172,7 +172,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 201 })
+        new Response(JSON.stringify(mockResponse), { status: 201 }),
       );
 
       const result = await client.createTask(createRequest);
@@ -186,7 +186,7 @@ describe("MotionClient", () => {
             "X-API-Key": "test-api-key",
             "Content-Type": "application/json",
           }),
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -205,7 +205,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.updateTask("task-123", updateRequest);
@@ -215,7 +215,7 @@ describe("MotionClient", () => {
         expect.objectContaining({
           method: "PATCH",
           body: JSON.stringify(updateRequest),
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -249,11 +249,13 @@ describe("MotionClient", () => {
           isResolvedStatus: false,
         },
         priority: "medium",
-        assignees: [{
-          id: "user-456",
-          name: "Assignee",
-          email: "assignee@example.com",
-        }],
+        assignees: [
+          {
+            id: "user-456",
+            name: "Assignee",
+            email: "assignee@example.com",
+          },
+        ],
         labels: [],
         createdAt: "2024-01-01T00:00:00Z",
         updatedAt: "2024-01-01T00:00:00Z",
@@ -261,7 +263,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.moveTask("task-123", moveRequest);
@@ -271,7 +273,7 @@ describe("MotionClient", () => {
         expect.objectContaining({
           method: "PATCH",
           body: JSON.stringify(moveRequest),
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -279,9 +281,7 @@ describe("MotionClient", () => {
 
   describe("deleteTask", () => {
     it("should delete a task", async () => {
-      mockFetch.mockResolvedValueOnce(
-        new Response(null, { status: 204 })
-      );
+      mockFetch.mockResolvedValueOnce(new Response(null, { status: 204 }));
 
       await client.deleteTask("task-123");
 
@@ -289,16 +289,14 @@ describe("MotionClient", () => {
         "https://api.usemotion.com/v1/tasks/task-123",
         expect.objectContaining({
           method: "DELETE",
-        })
+        }),
       );
     });
   });
 
   describe("unassignTask", () => {
     it("should unassign a task", async () => {
-      mockFetch.mockResolvedValueOnce(
-        new Response(null, { status: 204 })
-      );
+      mockFetch.mockResolvedValueOnce(new Response(null, { status: 204 }));
 
       await client.unassignTask("task-123");
 
@@ -306,7 +304,7 @@ describe("MotionClient", () => {
         "https://api.usemotion.com/v1/tasks/task-123/assignee",
         expect.objectContaining({
           method: "DELETE",
-        })
+        }),
       );
     });
   });
@@ -320,14 +318,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockUser), { status: 200 })
+        new Response(JSON.stringify(mockUser), { status: 200 }),
       );
 
       const result = await client.getUser();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/users/me",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockUser);
     });
@@ -343,14 +341,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.listUsers();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/users",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -364,7 +362,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const params = {
@@ -382,7 +380,7 @@ describe("MotionClient", () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         expectedUrl.toString(),
-        expect.any(Object)
+        expect.any(Object),
       );
     });
   });
@@ -397,14 +395,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.listWorkspaces();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/workspaces",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -418,7 +416,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const params = {
@@ -430,11 +428,11 @@ describe("MotionClient", () => {
 
       const expectedUrl = new URL("https://api.usemotion.com/v1/workspaces");
       expectedUrl.searchParams.append("cursor", params.cursor);
-      params.ids.forEach(id => expectedUrl.searchParams.append("ids", id));
+      params.ids.forEach((id) => expectedUrl.searchParams.append("ids", id));
 
       expect(mockFetch).toHaveBeenCalledWith(
         expectedUrl.toString(),
-        expect.any(Object)
+        expect.any(Object),
       );
     });
   });
@@ -449,14 +447,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.listProjects();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/projects",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -470,7 +468,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const params = {
@@ -486,7 +484,7 @@ describe("MotionClient", () => {
 
       expect(mockFetch).toHaveBeenCalledWith(
         expectedUrl.toString(),
-        expect.any(Object)
+        expect.any(Object),
       );
     });
   });
@@ -500,14 +498,14 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockProject), { status: 200 })
+        new Response(JSON.stringify(mockProject), { status: 200 }),
       );
 
       const result = await client.getProject("project-123");
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/projects/project-123",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockProject);
     });
@@ -527,7 +525,7 @@ describe("MotionClient", () => {
       };
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 201 })
+        new Response(JSON.stringify(mockResponse), { status: 201 }),
       );
 
       const result = await client.createProject(createRequest);
@@ -537,7 +535,7 @@ describe("MotionClient", () => {
         expect.objectContaining({
           method: "POST",
           body: JSON.stringify(createRequest),
-        })
+        }),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -548,14 +546,14 @@ describe("MotionClient", () => {
       const mockResponse: MotionSchedulesResponse = [];
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.getSchedules();
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/schedules",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -566,14 +564,14 @@ describe("MotionClient", () => {
       const mockResponse: MotionStatusesResponse = [];
 
       mockFetch.mockResolvedValueOnce(
-        new Response(JSON.stringify(mockResponse), { status: 200 })
+        new Response(JSON.stringify(mockResponse), { status: 200 }),
       );
 
       const result = await client.getStatuses("workspace-123");
 
       expect(mockFetch).toHaveBeenCalledWith(
         "https://api.usemotion.com/v1/statuses?workspaceId=workspace-123",
-        expect.any(Object)
+        expect.any(Object),
       );
       expect(result).toEqual(mockResponse);
     });
@@ -582,44 +580,50 @@ describe("MotionClient", () => {
   describe("error handling", () => {
     it("should handle 400 errors", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response("Invalid request", { status: 400, statusText: "Bad Request" })
+        new Response("Invalid request", {
+          status: 400,
+          statusText: "Bad Request",
+        }),
       );
 
       await expect(client.listTasks()).rejects.toThrow(
-        "Motion API error: 400 Bad Request\nInvalid request"
+        "Motion API error: 400 Bad Request\nInvalid request",
       );
     });
 
     it("should handle 401 errors", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response("Unauthorized", { status: 401, statusText: "Unauthorized" })
+        new Response("Unauthorized", {
+          status: 401,
+          statusText: "Unauthorized",
+        }),
       );
 
       await expect(client.listTasks()).rejects.toThrow(
-        "Motion API error: 401 Unauthorized\nUnauthorized"
+        "Motion API error: 401 Unauthorized\nUnauthorized",
       );
     });
 
     it("should handle 404 errors", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response("Not found", { status: 404, statusText: "Not Found" })
+        new Response("Not found", { status: 404, statusText: "Not Found" }),
       );
 
       await expect(client.getTask("non-existent")).rejects.toThrow(
-        "Motion API error: 404 Not Found\nNot found"
+        "Motion API error: 404 Not Found\nNot found",
       );
     });
 
     it("should handle 500 errors", async () => {
       mockFetch.mockResolvedValueOnce(
-        new Response("Internal server error", { 
-          status: 500, 
-          statusText: "Internal Server Error" 
-        })
+        new Response("Internal server error", {
+          status: 500,
+          statusText: "Internal Server Error",
+        }),
       );
 
       await expect(client.listTasks()).rejects.toThrow(
-        "Motion API error: 500 Internal Server Error\nInternal server error"
+        "Motion API error: 500 Internal Server Error\nInternal server error",
       );
     });
 
