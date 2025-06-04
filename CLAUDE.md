@@ -84,3 +84,34 @@ When implementing new Motion API endpoints:
 ## Development Best Practices
 
 - Commit often using conventional commits. Use feature branches.
+
+## Feature Development Workflow
+
+When implementing new features from GitHub issues:
+
+1. **Planning & Setup**:
+   - Use TodoWrite to create a task list based on the issue requirements
+   - Create a feature branch: `git checkout -b feat/feature-name`
+
+2. **Implementation Steps** (following the established patterns):
+   - Add type definitions in `src/types.ts`
+   - Add method to `MotionClient` class in `src/motion-client.ts`
+   - Create tool file in `src/tools/`
+   - Register tool in `src/tools/index.ts`
+   - Update TodoWrite to mark tasks as completed
+
+3. **Quality Assurance**:
+   - Run `npm run build` to ensure no TypeScript errors
+   - Verify all imports and exports are correctly wired
+
+4. **Git Workflow**:
+   - Stage changes: `git add .`
+   - Commit with descriptive message referencing the issue
+   - Push feature branch: `git push -u origin feat/feature-name`
+   - Create PR that references and closes the issue
+   - Ensure PR description is clean (avoid shell command artifacts)
+
+5. **Documentation**:
+   - Use Playwright for fetching API documentation when WebFetch is not preferred
+   - Follow existing code patterns and naming conventions
+   - Include proper error handling in all tools

@@ -14,7 +14,8 @@ import {
   CreateProjectRequest,
   CreateProjectResponse,
   GetProjectResponse,
-  MotionSchedulesResponse
+  MotionSchedulesResponse,
+  MotionStatusesResponse
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -211,6 +212,14 @@ export class MotionClient {
 
   async getSchedules(): Promise<MotionSchedulesResponse> {
     const endpoint = "/schedules";
+    return this.makeRequest(endpoint);
+  }
+
+  async getStatuses(workspaceId: string): Promise<MotionStatusesResponse> {
+    const queryParams = new URLSearchParams();
+    queryParams.append("workspaceId", workspaceId);
+    
+    const endpoint = `/statuses?${queryParams.toString()}`;
     return this.makeRequest(endpoint);
   }
 }
