@@ -1,26 +1,26 @@
 import {
-  jest,
-  describe,
-  it,
-  expect,
-  beforeEach,
   afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  jest,
 } from "@jest/globals";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory";
 import { MotionMCPServer } from "./motion-mcp-server.js";
 import { MotionClient } from "./motion-client.js";
 import type {
-  MotionTask,
-  MotionUser,
+  CreateProjectRequest,
+  CreateTaskRequest,
   MotionProject,
-  MotionWorkspace,
   MotionSchedule,
   MotionStatus,
-  CreateTaskRequest,
-  CreateProjectRequest,
-  UpdateTaskRequest,
+  MotionTask,
+  MotionUser,
+  MotionWorkspace,
   MoveTaskRequest,
+  UpdateTaskRequest,
 } from "./types.js";
 
 // Mock MotionClient

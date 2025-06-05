@@ -1,7 +1,7 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
-import { MotionClient } from "./motion-client";
-import { registerAllTools } from "./tools";
-import { Transport } from "@modelcontextprotocol/sdk/shared/transport";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { MotionClient } from "./motion-client.js";
+import { registerAllTools } from "./tools/index.js";
+import { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 
 export class MotionMCPServer {
   private readonly server: McpServer;

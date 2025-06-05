@@ -1,21 +1,21 @@
 import {
-  MotionListTasksResponse,
-  CreateTaskRequest,
-  CreateTaskResponse,
-  UpdateTaskRequest,
-  UpdateTaskResponse,
-  GetTaskResponse,
-  MoveTaskRequest,
-  MoveTaskResponse,
-  MotionUser,
-  MotionListUsersResponse,
-  MotionListWorkspacesResponse,
-  MotionListProjectsResponse,
   CreateProjectRequest,
   CreateProjectResponse,
+  CreateTaskRequest,
+  CreateTaskResponse,
   GetProjectResponse,
+  GetTaskResponse,
+  MotionListProjectsResponse,
+  MotionListTasksResponse,
+  MotionListUsersResponse,
+  MotionListWorkspacesResponse,
   MotionSchedulesResponse,
   MotionStatusesResponse,
+  MotionUser,
+  MoveTaskRequest,
+  MoveTaskResponse,
+  UpdateTaskRequest,
+  UpdateTaskResponse,
 } from "./types.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
@@ -56,69 +56,6 @@ export class MotionClient {
 
   constructor(config: MotionClientConfig) {
     this.config = config;
-  }
-
-  private async makeRequest<Response>(
-    endpoint: string,
-    options: RequestInit = {},
-  ): Promise<Response> {
-    const url = `${MOTION_API_BASE_URL}${endpoint}`;
-    const requestOptions = {
-      ...options,
-      headers: {
-        "X-API-Key": this.config.apiKey,
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
-    };
-
-    console.error(`[Motion API] ${requestOptions.method || "GET"} ${url}`);
-    console.error(
-      `[Motion API] Request headers:`,
-      JSON.stringify(
-        {
-          ...requestOptions.headers,
-          "X-API-Key": "[REDACTED]",
-        },
-        null,
-        2,
-      ),
-    );
-    if (requestOptions.body) {
-      console.error(`[Motion API] Request body:`, requestOptions.body);
-    }
-
-    const response = await fetch(url, requestOptions);
-
-    console.error(
-      `[Motion API] Response status: ${response.status} ${response.statusText}`,
-    );
-    console.error(
-      `[Motion API] Response headers:`,
-      JSON.stringify(Object.fromEntries(response.headers), null, 2),
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[Motion API] Error response body:`, errorText);
-      throw new Error(
-        `Motion API error: ${response.status} ${response.statusText}\n${errorText}`,
-      );
-    }
-
-    // Check if the response has content (not 204 No Content)
-    if (response.status === 204) {
-      console.error(`[Motion API] No content response`);
-      return undefined as Response;
-    }
-
-    const responseData = await response.json();
-    console.error(
-      `[Motion API] Response body:`,
-      JSON.stringify(responseData, null, 2),
-    );
-
-    return responseData as Response;
   }
 
   async listTasks(
@@ -266,5 +203,68 @@ export class MotionClient {
 
     const endpoint = `/statuses?${queryParams.toString()}`;
     return this.makeRequest(endpoint);
+  }
+
+  private async makeRequest<Response>(
+    endpoint: string,
+    options: RequestInit = {},
+  ): Promise<Response> {
+    const url = `${MOTION_API_BASE_URL}${endpoint}`;
+    const requestOptions = {
+      ...options,
+      headers: {
+        "X-API-Key": this.config.apiKey,
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+    };
+
+    console.error(`[Motion API] ${requestOptions.method || "GET"} ${url}`);
+    console.error(
+      `[Motion API] Request headers:`,
+      JSON.stringify(
+        {
+          ...requestOptions.headers,
+          "X-API-Key": "[REDACTED]",
+        },
+        null,
+        2,
+      ),
+    );
+    if (requestOptions.body) {
+      console.error(`[Motion API] Request body:`, requestOptions.body);
+    }
+
+    const response = await fetch(url, requestOptions);
+
+    console.error(
+      `[Motion API] Response status: ${response.status} ${response.statusText}`,
+    );
+    console.error(
+      `[Motion API] Response headers:`,
+      JSON.stringify(Object.fromEntries(response.headers), null, 2),
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`[Motion API] Error response body:`, errorText);
+      throw new Error(
+        `Motion API error: ${response.status} ${response.statusText}\n${errorText}`,
+      );
+    }
+
+    // Check if the response has content (not 204 No Content)
+    if (response.status === 204) {
+      console.error(`[Motion API] No content response`);
+      return undefined as Response;
+    }
+
+    const responseData = await response.json();
+    console.error(
+      `[Motion API] Response body:`,
+      JSON.stringify(responseData, null, 2),
+    );
+
+    return responseData as Response;
   }
 }
