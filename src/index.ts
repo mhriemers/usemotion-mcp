@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { MotionMCPServer } from "./motion-mcp-server.js";
 
 dotenv.config();
-
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { MotionMCPServer } from "./motion-mcp-server";
 
 const apiKey = process.env.MOTION_API_KEY;
 if (!apiKey) {

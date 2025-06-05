@@ -1,17 +1,17 @@
 import { jest } from "@jest/globals";
 import { MotionClient } from "./motion-client.js";
 import type {
-  MotionListTasksResponse,
+  CreateProjectRequest,
   CreateTaskRequest,
-  UpdateTaskRequest,
-  MoveTaskRequest,
-  MotionUser,
+  MotionListProjectsResponse,
+  MotionListTasksResponse,
   MotionListUsersResponse,
   MotionListWorkspacesResponse,
-  MotionListProjectsResponse,
-  CreateProjectRequest,
   MotionSchedulesResponse,
   MotionStatusesResponse,
+  MotionUser,
+  MoveTaskRequest,
+  UpdateTaskRequest,
 } from "./types.js";
 
 describe("MotionClient", () => {
