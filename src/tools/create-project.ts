@@ -39,7 +39,10 @@ export const registerCreateProjectTool: ToolRegistrar = (server, client) => {
               .string()
               .min(1)
               .describe("ID of the stage definition"),
-            dueDate: z.string().datetime({ offset: true }).describe("Due date for this stage (ISO 8601)"),
+            dueDate: z
+              .string()
+              .datetime({ offset: true })
+              .describe("Due date for this stage (ISO 8601)"),
             variableInstances: z
               .array(
                 z.object({
