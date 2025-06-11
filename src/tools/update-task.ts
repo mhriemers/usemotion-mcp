@@ -6,18 +6,24 @@ export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
     "update_motion_task",
     "Update a task's properties including name, status, assignee, or scheduling",
     {
-      taskId: z.string().describe("The ID of the task to update"),
-      name: z.string().optional().describe("Updated title of the task"),
+      taskId: z.string().min(1).describe("The ID of the task to update"),
+      name: z.string().min(1).optional().describe("Updated title of the task"),
       workspaceId: z
         .string()
+        .min(1)
         .optional()
         .describe("Updated workspace ID for the task"),
       dueDate: z
         .string()
+        .datetime({ offset: true })
         .optional()
         .describe("Updated ISO 8601 due date. REQUIRED for scheduled tasks"),
       duration: z
-        .union([z.string(), z.number()])
+        .union([
+          z.literal("NONE"),
+          z.literal("REMINDER"),
+          z.number().int().positive(),
+        ])
         .optional()
         .describe(
           "Updated duration: 'NONE', 'REMINDER', or minutes as a number",
@@ -28,14 +34,15 @@ export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
           z.object({
             startDate: z
               .string()
+              .datetime({ offset: true })
               .describe("ISO 8601 Date for scheduling start"),
             deadlineType: z
-              .string()
-              .optional()
+              .enum(["HARD", "SOFT", "NONE"])
+              .default("SOFT")
               .describe("HARD, SOFT (default), or NONE"),
             schedule: z
               .string()
-              .optional()
+              .default("Work Hours")
               .describe("Schedule name (defaults to 'Work Hours')"),
           }),
           z.null(),
@@ -51,11 +58,11 @@ export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
         .optional()
         .describe("Updated description in GitHub Flavored Markdown"),
       priority: z
-        .string()
+        .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
         .optional()
         .describe("Updated priority: ASAP, HIGH, MEDIUM, or LOW"),
       labels: z
-        .array(z.string())
+        .array(z.string().min(1))
         .optional()
         .describe("Updated list of label names for the task"),
       assigneeId: z.string().optional().describe("Updated assignee user ID"),

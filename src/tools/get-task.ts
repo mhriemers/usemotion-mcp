@@ -6,7 +6,7 @@ export const registerGetTaskTool: ToolRegistrar = (server, client) => {
     "get_motion_task",
     "Get a specific task by its ID",
     {
-      taskId: z.string().describe("The ID of the task to retrieve"),
+      taskId: z.string().min(1).describe("The ID of the task to retrieve"),
     },
     async (params) => {
       try {

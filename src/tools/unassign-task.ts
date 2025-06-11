@@ -6,7 +6,7 @@ export const registerUnassignTaskTool: ToolRegistrar = (server, client) => {
     "unassign_motion_task",
     "Remove the assignee from a task",
     {
-      taskId: z.string().describe("The ID of the task to unassign"),
+      taskId: z.string().min(1).describe("The ID of the task to unassign"),
     },
     async (params) => {
       try {

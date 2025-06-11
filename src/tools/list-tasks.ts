@@ -13,7 +13,7 @@ export const registerListTasksTool: ToolRegistrar = (server, client) => {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
       includeAllStatuses: z
         .boolean()
-        .optional()
+        .default(false)
         .describe("Include all task statuses"),
       label: z.string().optional().describe("Filter tasks by label"),
       name: z.string().optional().describe("Case-insensitive task name search"),

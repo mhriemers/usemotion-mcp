@@ -6,7 +6,7 @@ export const registerGetProjectTool: ToolRegistrar = (server, client) => {
     "get_motion_project",
     "Get a specific project by its ID",
     {
-      projectId: z.string().describe("The ID of the project to retrieve"),
+      projectId: z.string().min(1).describe("The ID of the project to retrieve"),
     },
     async (params) => {
       try {

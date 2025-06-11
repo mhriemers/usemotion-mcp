@@ -8,7 +8,7 @@ export const registerListWorkspacesTool: ToolRegistrar = (server, client) => {
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
       ids: z
-        .array(z.string())
+        .array(z.string().min(1))
         .optional()
         .describe("Expand details of specific workspace IDs"),
     },
