@@ -18,7 +18,7 @@ DELETE /v1/recurring-tasks/{id}
 ## Path Parameters
 
 ### id
-- **Type**: integer
+- **Type**: string
 - **Required**: Yes
 - **Description**: ID of the recurring task to delete.
 
