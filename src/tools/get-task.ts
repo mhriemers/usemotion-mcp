@@ -1,13 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { getTaskSchema } from "../schemas.js";
 
 export const registerGetTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "get_motion_task",
     "Get a specific task by its ID",
-    {
-      taskId: z.string().min(1).describe("The ID of the task to retrieve"),
-    },
+    getTaskSchema.shape,
     async (params) => {
       try {
         const result = await client.getTask(params.taskId);

@@ -1,13 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { deleteTaskSchema } from "../schemas.js";
 
 export const registerDeleteTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "delete_motion_task",
     "Delete a task by its ID",
-    {
-      taskId: z.string().min(1).describe("The ID of the task to delete"),
-    },
+    deleteTaskSchema.shape,
     async (params) => {
       try {
         await client.deleteTask(params.taskId);

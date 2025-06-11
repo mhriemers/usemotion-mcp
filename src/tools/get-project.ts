@@ -1,16 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { getProjectSchema } from "../schemas.js";
 
 export const registerGetProjectTool: ToolRegistrar = (server, client) => {
   server.tool(
     "get_motion_project",
     "Get a specific project by its ID",
-    {
-      projectId: z
-        .string()
-        .min(1)
-        .describe("The ID of the project to retrieve"),
-    },
+    getProjectSchema.shape,
     async (params) => {
       try {
         const result = await client.getProject(params.projectId);

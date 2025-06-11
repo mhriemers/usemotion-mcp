@@ -113,7 +113,7 @@ describe("MotionClient", () => {
           label: "urgent",
           name: "Test Task",
           projectId: "project-789",
-          status: "completed",
+          status: ["completed"],
           workspaceId: "workspace-101",
         };
 
@@ -126,7 +126,7 @@ describe("MotionClient", () => {
         expectedUrl.searchParams.append("label", params.label);
         expectedUrl.searchParams.append("name", params.name);
         expectedUrl.searchParams.append("projectId", params.projectId);
-        expectedUrl.searchParams.append("status", params.status);
+        expectedUrl.searchParams.append("status", params.status[0]);
         expectedUrl.searchParams.append("workspaceId", params.workspaceId);
 
         expect(mockFetch).toHaveBeenCalledWith(
@@ -197,6 +197,7 @@ describe("MotionClient", () => {
       it("should update a task", async () => {
         const updateRequest: UpdateTaskRequest = {
           name: "Updated Task",
+          workspaceId: "ws-123",
           status: "completed",
         };
 

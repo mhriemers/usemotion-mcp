@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   CreateProjectRequest,
   CreateProjectResponse,
@@ -17,6 +18,12 @@ import {
   UpdateTaskRequest,
   UpdateTaskResponse,
 } from "./types.js";
+import {
+  listTasksSchema,
+  listUsersSchema,
+  listWorkspacesSchema,
+  listProjectsSchema,
+} from "./schemas.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
 
@@ -24,32 +31,10 @@ export interface MotionClientConfig {
   apiKey: string;
 }
 
-export interface ListTasksParams {
-  assigneeId?: string;
-  cursor?: string;
-  includeAllStatuses?: boolean;
-  label?: string;
-  name?: string;
-  projectId?: string;
-  status?: string;
-  workspaceId?: string;
-}
-
-export interface ListUsersParams {
-  cursor?: string;
-  teamId?: string;
-  workspaceId?: string;
-}
-
-export interface ListWorkspacesParams {
-  cursor?: string;
-  ids?: string[];
-}
-
-export interface ListProjectsParams {
-  cursor?: string;
-  workspaceId?: string;
-}
+export type ListTasksParams = z.infer<typeof listTasksSchema>;
+export type ListUsersParams = z.infer<typeof listUsersSchema>;
+export type ListWorkspacesParams = z.infer<typeof listWorkspacesSchema>;
+export type ListProjectsParams = z.infer<typeof listProjectsSchema>;
 
 export class MotionClient {
   private config: MotionClientConfig;
@@ -74,7 +59,9 @@ export class MotionClient {
     if (params.label) queryParams.append("label", params.label);
     if (params.name) queryParams.append("name", params.name);
     if (params.projectId) queryParams.append("projectId", params.projectId);
-    if (params.status) queryParams.append("status", params.status);
+    if (params.status) {
+      params.status.forEach(status => queryParams.append("status", status));
+    }
     if (params.workspaceId)
       queryParams.append("workspaceId", params.workspaceId);
 
@@ -197,11 +184,13 @@ export class MotionClient {
     return this.makeRequest(endpoint);
   }
 
-  async getStatuses(workspaceId: string): Promise<MotionStatusesResponse> {
+  async getStatuses(workspaceId?: string): Promise<MotionStatusesResponse> {
     const queryParams = new URLSearchParams();
-    queryParams.append("workspaceId", workspaceId);
+    if (workspaceId) {
+      queryParams.append("workspaceId", workspaceId);
+    }
 
-    const endpoint = `/statuses?${queryParams.toString()}`;
+    const endpoint = `/statuses${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
   }
 

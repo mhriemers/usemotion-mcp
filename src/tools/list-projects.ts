@@ -1,17 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { listProjectsSchema } from "../schemas.js";
 
 export const registerListProjectsTool: ToolRegistrar = (server, client) => {
   server.tool(
     "list_motion_projects",
     "List all projects with optional workspace filtering",
-    {
-      cursor: z.string().optional().describe("Pagination cursor for next page"),
-      workspaceId: z
-        .string()
-        .optional()
-        .describe("Filter projects by workspace ID"),
-    },
+    listProjectsSchema.shape,
     async (params) => {
       try {
         const result = await client.listProjects(params);
