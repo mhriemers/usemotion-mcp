@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   CreateProjectRequest,
   CreateProjectResponse,
@@ -17,6 +18,12 @@ import {
   UpdateTaskRequest,
   UpdateTaskResponse,
 } from "./types.js";
+import {
+  listTasksSchema,
+  listUsersSchema,
+  listWorkspacesSchema,
+  listProjectsSchema,
+} from "./schemas.js";
 
 const MOTION_API_BASE_URL = "https://api.usemotion.com/v1";
 
@@ -24,32 +31,10 @@ export interface MotionClientConfig {
   apiKey: string;
 }
 
-export interface ListTasksParams {
-  assigneeId?: string;
-  cursor?: string;
-  includeAllStatuses?: boolean;
-  label?: string;
-  name?: string;
-  projectId?: string;
-  status?: string;
-  workspaceId?: string;
-}
-
-export interface ListUsersParams {
-  cursor?: string;
-  teamId?: string;
-  workspaceId?: string;
-}
-
-export interface ListWorkspacesParams {
-  cursor?: string;
-  ids?: string[];
-}
-
-export interface ListProjectsParams {
-  cursor?: string;
-  workspaceId?: string;
-}
+export type ListTasksParams = z.infer<typeof listTasksSchema>;
+export type ListUsersParams = z.infer<typeof listUsersSchema>;
+export type ListWorkspacesParams = z.infer<typeof listWorkspacesSchema>;
+export type ListProjectsParams = z.infer<typeof listProjectsSchema>;
 
 export class MotionClient {
   private config: MotionClientConfig;

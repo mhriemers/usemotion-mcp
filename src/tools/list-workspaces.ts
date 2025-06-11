@@ -1,17 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { listWorkspacesSchema } from "../schemas.js";
 
 export const registerListWorkspacesTool: ToolRegistrar = (server, client) => {
   server.tool(
     "list_motion_workspaces",
     "List all available workspaces with pagination support",
-    {
-      cursor: z.string().optional().describe("Pagination cursor for next page"),
-      ids: z
-        .array(z.string().min(1))
-        .optional()
-        .describe("Expand details of specific workspace IDs"),
-    },
+    listWorkspacesSchema.shape,
     async (params) => {
       try {
         const result = await client.listWorkspaces(params);

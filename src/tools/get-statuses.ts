@@ -1,16 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { getStatusesSchema } from "../schemas.js";
 
 export const registerGetStatusesTool: ToolRegistrar = (server, client) => {
   server.tool(
     "get_motion_statuses",
     "Get available task statuses for a specific workspace",
-    {
-      workspaceId: z
-        .string()
-        .min(1)
-        .describe("The workspace ID to get statuses for"),
-    },
+    getStatusesSchema.shape,
     async (params) => {
       try {
         const result = await client.getStatuses(params.workspaceId);

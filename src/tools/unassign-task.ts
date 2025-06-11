@@ -1,13 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
+import { unassignTaskSchema } from "../schemas.js";
 
 export const registerUnassignTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "unassign_motion_task",
     "Remove the assignee from a task",
-    {
-      taskId: z.string().min(1).describe("The ID of the task to unassign"),
-    },
+    unassignTaskSchema.shape,
     async (params) => {
       try {
         await client.unassignTask(params.taskId);
