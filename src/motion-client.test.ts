@@ -197,6 +197,7 @@ describe("MotionClient", () => {
       it("should update a task", async () => {
         const updateRequest: UpdateTaskRequest = {
           name: "Updated Task",
+          workspaceId: "ws-123",
           status: "completed",
         };
 

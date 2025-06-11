@@ -406,6 +406,7 @@ describe("MotionMCPServer", () => {
       it("should update task", async () => {
         const updateRequest: UpdateTaskRequest = {
           name: "Updated Task Name",
+          workspaceId: "workspace-1",
           priority: "LOW",
         };
 

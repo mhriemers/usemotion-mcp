@@ -184,11 +184,13 @@ export class MotionClient {
     return this.makeRequest(endpoint);
   }
 
-  async getStatuses(workspaceId: string): Promise<MotionStatusesResponse> {
+  async getStatuses(workspaceId?: string): Promise<MotionStatusesResponse> {
     const queryParams = new URLSearchParams();
-    queryParams.append("workspaceId", workspaceId);
+    if (workspaceId) {
+      queryParams.append("workspaceId", workspaceId);
+    }
 
-    const endpoint = `/statuses?${queryParams.toString()}`;
+    const endpoint = `/statuses${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
     return this.makeRequest(endpoint);
   }
 

@@ -22,7 +22,7 @@ Header with the name `X-API-Key` where the value is your API key.
 
 ### id
 
-- **Type:** integer
+- **Type:** string
 - **Required:** Yes
 
 ID of the task to delete.

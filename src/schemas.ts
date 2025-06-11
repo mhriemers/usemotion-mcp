@@ -97,8 +97,8 @@ export const createTaskSchema = z.object({
 
 export const updateTaskSchema = z.object({
   taskId: minLengthIdField.describe("The ID of the task to update"),
-  name: nameField.optional().describe("Updated title of the task"),
-  workspaceId: minLengthIdField.optional().describe(
+  name: nameField.describe("Updated title of the task"),
+  workspaceId: minLengthIdField.describe(
     "Updated workspace ID for the task",
   ),
   dueDate: iso8601DateField
@@ -256,7 +256,7 @@ export const listWorkspacesSchema = z.object({
 // ============================================================================
 
 export const getStatusesSchema = z.object({
-  workspaceId: minLengthIdField.describe(
+  workspaceId: minLengthIdField.optional().describe(
     "Get statuses for a particular workspace",
   ),
 });
