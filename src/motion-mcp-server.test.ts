@@ -353,7 +353,7 @@ describe("MotionMCPServer", () => {
           autoScheduled: {
             startDate: "2024-01-01T09:00:00Z",
             deadlineType: "HARD",
-            schedule: "work-hours",
+            schedule: "Work Hours",
           },
           projectId: "project-1",
           description: "Detailed description",
