@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerListUsersTool: ToolRegistrar = (server, client) => {
   server.tool(
     "list_motion_users",
+    "List users in the workspace with optional filtering",
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
       teamId: z.string().optional().describe("Filter users by team ID"),

@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerCreateTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "create_motion_task",
+    "Create a new task with name, workspace, assignee, and auto-scheduling options",
     {
       name: z.string().describe("Title of the task"),
       workspaceId: z

@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerListWorkspacesTool: ToolRegistrar = (server, client) => {
   server.tool(
     "list_motion_workspaces",
+    "List all available workspaces with pagination support",
     {
       cursor: z.string().optional().describe("Pagination cursor for next page"),
       ids: z
