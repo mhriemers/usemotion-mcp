@@ -354,7 +354,7 @@ export const motionStatusSchema = z.object({
 });
 
 export const motionTaskSchema = z.object({
-  id: z.string(),
+  id: idField,
   name: z.string(),
   description: z.string().optional(),
   dueDate: z.string().optional(),
@@ -362,12 +362,12 @@ export const motionTaskSchema = z.object({
   creator: motionUserSchema,
   project: z
     .object({
-      id: z.string(),
+      id: idField,
       name: z.string(),
     })
     .optional(),
   workspace: z.object({
-    id: z.string(),
+    id: idField,
     name: z.string(),
   }),
   status: motionStatusSchema,
@@ -394,10 +394,10 @@ export const createTaskResponseSchema = motionTaskSchema.extend({
 });
 
 export const motionProjectSchema = z.object({
-  id: z.string(),
+  id: idField,
   name: z.string(),
   description: z.string(),
-  workspaceId: z.string(),
+  workspaceId: idField,
   status: motionStatusSchema,
   createdTime: z.string(),
   updatedTime: z.string(),
@@ -405,9 +405,9 @@ export const motionProjectSchema = z.object({
 });
 
 export const motionWorkspaceSchema = z.object({
-  id: z.string(),
+  id: idField,
   name: z.string(),
-  teamId: z.string(),
+  teamId: idField,
   type: z.string(),
   labels: z.array(
     z.object({
