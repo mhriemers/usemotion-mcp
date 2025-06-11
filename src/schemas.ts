@@ -28,7 +28,7 @@ export const createTaskSchema = z.object({
   status: z
     .string()
     .optional()
-    .describe("Defaults to workspace default status"),
+    .describe("Task status"),
   autoScheduled: z
     .union([
       z.object({
@@ -40,14 +40,10 @@ export const createTaskSchema = z.object({
           ),
         deadlineType: z
           .enum(["HARD", "SOFT", "NONE"])
-          .default("SOFT")
-          .describe("HARD, SOFT (default), or NONE"),
+          .describe("HARD, SOFT, or NONE"),
         schedule: z
           .string()
-          .default("Work Hours")
-          .describe(
-            "Schedule the task must adhere to. Defaults to 'Work Hours'",
-          ),
+          .describe("Schedule the task must adhere to"),
       }),
       z.null(),
     ])
@@ -108,12 +104,10 @@ export const updateTaskSchema = z.object({
           .describe("ISO 8601 Date for scheduling start"),
         deadlineType: z
           .enum(["HARD", "SOFT", "NONE"])
-          .default("SOFT")
-          .describe("HARD, SOFT (default), or NONE"),
+          .describe("HARD, SOFT, or NONE"),
         schedule: z
           .string()
-          .default("Work Hours")
-          .describe("Schedule name (defaults to 'Work Hours')"),
+          .describe("Schedule name"),
       }),
       z.null(),
     ])
@@ -158,7 +152,7 @@ export const listTasksSchema = z.object({
   includeAllStatuses: z.coerce
     .boolean()
     .optional()
-    .describe("Include all task statuses (defaults to false)"),
+    .describe("Include all task statuses"),
   label: z.string().optional().describe("Filter tasks by label"),
   name: z.string().optional().describe("Case-insensitive task name search"),
   projectId: z
@@ -207,7 +201,7 @@ export const createProjectSchema = z.object({
   priority: z
     .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
     .optional()
-    .describe("Project priority (defaults to MEDIUM)"),
+    .describe("Project priority"),
   projectDefinitionId: z
     .string()
     .optional()
