@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerGetTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "get_motion_task",
+    "Get a specific task by its ID",
     {
       taskId: z.string().describe("The ID of the task to retrieve"),
     },

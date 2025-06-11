@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerMoveTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "move_motion_task",
+    "Move a task to a different workspace with optional reassignment",
     {
       taskId: z.string().describe("The ID of the task to move"),
       workspaceId: z

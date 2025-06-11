@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerUpdateTaskTool: ToolRegistrar = (server, client) => {
   server.tool(
     "update_motion_task",
+    "Update a task's properties including name, status, assignee, or scheduling",
     {
       taskId: z.string().describe("The ID of the task to update"),
       name: z.string().optional().describe("Updated title of the task"),

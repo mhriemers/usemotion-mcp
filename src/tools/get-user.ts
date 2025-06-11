@@ -1,7 +1,7 @@
 import type { ToolRegistrar } from "./types.js";
 
 export const registerGetUserTool: ToolRegistrar = (server, client) => {
-  server.tool("get_motion_user", {}, async () => {
+  server.tool("get_motion_user", "Get the current authenticated user's information", {}, async () => {
     try {
       const result = await client.getUser();
       return {

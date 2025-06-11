@@ -1,7 +1,7 @@
 import type { ToolRegistrar } from "./types.js";
 
 export const registerGetSchedulesTool: ToolRegistrar = (server, client) => {
-  server.tool("get_motion_schedules", {}, async () => {
+  server.tool("get_motion_schedules", "Get available schedules for auto-scheduling tasks", {}, async () => {
     try {
       const result = await client.getSchedules();
       return {

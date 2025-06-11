@@ -4,6 +4,7 @@ import type { ToolRegistrar } from "./types.js";
 export const registerListTasksTool: ToolRegistrar = (server, client) => {
   server.tool(
     "list_motion_tasks",
+    "List tasks with filtering by assignee, project, workspace, status, label, or name",
     {
       assigneeId: z
         .string()
