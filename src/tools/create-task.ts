@@ -22,7 +22,7 @@ export const registerCreateTaskTool: ToolRegistrar = (server, client) => {
         .union([
           z.literal("NONE"),
           z.literal("REMINDER"),
-          z.number().int().positive(),
+          z.coerce.number().int().positive(),
         ])
         .optional()
         .describe(

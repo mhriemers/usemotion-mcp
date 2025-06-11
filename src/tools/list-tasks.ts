@@ -11,7 +11,7 @@ export const registerListTasksTool: ToolRegistrar = (server, client) => {
         .optional()
         .describe("Limit tasks to a specific assignee"),
       cursor: z.string().optional().describe("Pagination cursor for next page"),
-      includeAllStatuses: z
+      includeAllStatuses: z.coerce
         .boolean()
         .default(false)
         .describe("Include all task statuses"),
