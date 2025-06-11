@@ -155,7 +155,7 @@ export const listTasksSchema = z.object({
   includeAllStatuses: z.coerce
     .boolean()
     .optional()
-    .describe("Include all task statuses"),
+    .describe("Include all task statuses (defaults to false)"),
   label: z.string().optional().describe("Filter tasks by label"),
   name: z.string().optional().describe("Case-insensitive task name search"),
   projectId: z
@@ -277,6 +277,28 @@ export const listWorkspacesSchema = z.object({
     .array(z.string().min(1))
     .optional()
     .describe("Expand details of specific workspace IDs"),
+});
+
+// ============================================================================
+// Tool Input Schemas (with defaults)
+// ============================================================================
+
+// These schemas are used for tool inputs where we want to apply defaults
+// without making the fields required in the TypeScript types
+export const listTasksToolSchema = listTasksSchema.extend({
+  includeAllStatuses: z.coerce
+    .boolean()
+    .optional()
+    .default(false)
+    .describe("Include all task statuses (defaults to false)"),
+});
+
+export const createProjectToolSchema = createProjectSchema.extend({
+  priority: z
+    .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
+    .optional()
+    .default("MEDIUM")
+    .describe("Project priority (defaults to MEDIUM)"),
 });
 
 // ============================================================================
