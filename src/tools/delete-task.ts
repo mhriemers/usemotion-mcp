@@ -6,7 +6,7 @@ export const registerDeleteTaskTool: ToolRegistrar = (server, client) => {
     "delete_motion_task",
     "Delete a task by its ID",
     {
-      taskId: z.string().describe("The ID of the task to delete"),
+      taskId: z.string().min(1).describe("The ID of the task to delete"),
     },
     async (params) => {
       try {

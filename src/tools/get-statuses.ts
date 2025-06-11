@@ -6,7 +6,10 @@ export const registerGetStatusesTool: ToolRegistrar = (server, client) => {
     "get_motion_statuses",
     "Get available task statuses for a specific workspace",
     {
-      workspaceId: z.string().describe("The workspace ID to get statuses for"),
+      workspaceId: z
+        .string()
+        .min(1)
+        .describe("The workspace ID to get statuses for"),
     },
     async (params) => {
       try {

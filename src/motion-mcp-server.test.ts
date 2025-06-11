@@ -230,7 +230,9 @@ describe("MotionMCPServer", () => {
           arguments: {},
         });
 
-        expect(mockMotionClient.listTasks).toHaveBeenCalledWith({});
+        expect(mockMotionClient.listTasks).toHaveBeenCalledWith({
+          includeAllStatuses: false,
+        });
         expect(Array.isArray(result.content)).toBe(true);
         expect(result.content).toHaveLength(1);
         const content = result.content as Array<{ type: string; text: string }>;
@@ -350,8 +352,8 @@ describe("MotionMCPServer", () => {
           status: "In Progress",
           autoScheduled: {
             startDate: "2024-01-01T09:00:00Z",
-            deadlineType: "hard",
-            schedule: "work-hours",
+            deadlineType: "HARD",
+            schedule: "Work Hours",
           },
           projectId: "project-1",
           description: "Detailed description",
@@ -736,25 +738,25 @@ describe("MotionMCPServer", () => {
     });
 
     it("should validate enum parameters", async () => {
-      // This would be caught by Zod validation at the tool level
+      // This should be caught by Zod validation at the tool level
       mockMotionClient.createTask.mockResolvedValue({
         ...mockTask,
         ...mockTaskResponse,
       });
 
-      const result = await client.callTool({
-        name: "create_motion_task",
-        arguments: {
-          name: "Test Task",
-          workspaceId: "workspace-1",
-          priority: "INVALID_PRIORITY",
-        } as unknown as Record<string, unknown>,
-      });
+      await expect(
+        client.callTool({
+          name: "create_motion_task",
+          arguments: {
+            name: "Test Task",
+            workspaceId: "workspace-1",
+            priority: "INVALID_PRIORITY",
+          } as unknown as Record<string, unknown>,
+        }),
+      ).rejects.toThrow(/Invalid enum value/);
 
-      // The tool should still call the client, but Motion API might reject it
-      expect(mockMotionClient.createTask).toHaveBeenCalled();
-      const content = result.content as Array<{ type: string; text: string }>;
-      expect(content[0].text).toContain("task-123");
+      // The tool should not call the client due to validation failure
+      expect(mockMotionClient.createTask).not.toHaveBeenCalled();
     });
   });
 

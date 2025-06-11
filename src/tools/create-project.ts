@@ -6,12 +6,14 @@ export const registerCreateProjectTool: ToolRegistrar = (server, client) => {
     "create_motion_project",
     "Create a new project with name, workspace, and optional template",
     {
-      name: z.string().describe("The name of the project"),
+      name: z.string().min(1).describe("The name of the project"),
       workspaceId: z
         .string()
+        .min(1)
         .describe("The workspace ID where the project should be created"),
       dueDate: z
         .string()
+        .datetime({ offset: true })
         .optional()
         .describe("ISO 8601 due date for the project"),
       description: z
@@ -19,12 +21,12 @@ export const registerCreateProjectTool: ToolRegistrar = (server, client) => {
         .optional()
         .describe("The description of the project (HTML input accepted)"),
       labels: z
-        .array(z.string())
+        .array(z.string().min(1))
         .optional()
         .describe("Array of label names for the project"),
       priority: z
         .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
-        .optional()
+        .default("MEDIUM")
         .describe("Project priority (defaults to MEDIUM)"),
       projectDefinitionId: z
         .string()
@@ -35,13 +37,18 @@ export const registerCreateProjectTool: ToolRegistrar = (server, client) => {
           z.object({
             stageDefinitionId: z
               .string()
+              .min(1)
               .describe("ID of the stage definition"),
-            dueDate: z.string().describe("Due date for this stage (ISO 8601)"),
+            dueDate: z
+              .string()
+              .datetime({ offset: true })
+              .describe("Due date for this stage (ISO 8601)"),
             variableInstances: z
               .array(
                 z.object({
                   variableName: z
                     .string()
+                    .min(1)
                     .describe("Name of the variable definition"),
                   value: z.string().describe("The value for the variable"),
                 }),

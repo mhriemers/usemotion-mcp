@@ -6,18 +6,24 @@ export const registerCreateTaskTool: ToolRegistrar = (server, client) => {
     "create_motion_task",
     "Create a new task with name, workspace, assignee, and auto-scheduling options",
     {
-      name: z.string().describe("Title of the task"),
+      name: z.string().min(1).describe("Title of the task"),
       workspaceId: z
         .string()
+        .min(1)
         .describe("The workspace ID the task should be associated with"),
       dueDate: z
         .string()
+        .datetime({ offset: true })
         .optional()
         .describe(
           "ISO 8601 Due date on the task. REQUIRED for scheduled tasks",
         ),
       duration: z
-        .union([z.string(), z.number()])
+        .union([
+          z.literal("NONE"),
+          z.literal("REMINDER"),
+          z.number().int().positive(),
+        ])
         .optional()
         .describe(
           "Duration can be 'NONE', 'REMINDER', or an integer greater than 0 (representing minutes)",
@@ -31,16 +37,17 @@ export const registerCreateTaskTool: ToolRegistrar = (server, client) => {
           z.object({
             startDate: z
               .string()
+              .datetime({ offset: true })
               .describe(
                 "ISO 8601 Date which is trimmed to the start of the day passed",
               ),
             deadlineType: z
-              .string()
-              .optional()
+              .enum(["HARD", "SOFT", "NONE"])
+              .default("SOFT")
               .describe("HARD, SOFT (default), or NONE"),
             schedule: z
               .string()
-              .optional()
+              .default("Work Hours")
               .describe(
                 "Schedule the task must adhere to. Defaults to 'Work Hours'",
               ),
@@ -59,9 +66,12 @@ export const registerCreateTaskTool: ToolRegistrar = (server, client) => {
         .string()
         .optional()
         .describe("Github Flavored Markdown for the description"),
-      priority: z.string().optional().describe("ASAP, HIGH, MEDIUM, or LOW"),
+      priority: z
+        .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
+        .optional()
+        .describe("ASAP, HIGH, MEDIUM, or LOW"),
       labels: z
-        .array(z.string())
+        .array(z.string().min(1))
         .optional()
         .describe("The names of the labels to be added to the task"),
       assigneeId: z

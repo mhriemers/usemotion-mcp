@@ -6,9 +6,10 @@ export const registerMoveTaskTool: ToolRegistrar = (server, client) => {
     "move_motion_task",
     "Move a task to a different workspace with optional reassignment",
     {
-      taskId: z.string().describe("The ID of the task to move"),
+      taskId: z.string().min(1).describe("The ID of the task to move"),
       workspaceId: z
         .string()
+        .min(1)
         .describe("The ID of the workspace to move the task to"),
       assigneeId: z
         .string()
