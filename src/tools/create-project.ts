@@ -1,12 +1,11 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
-import { createProjectToolSchema } from "../schemas.js";
+import { createProjectSchema } from "../schemas.js";
 
 export const registerCreateProjectTool: ToolRegistrar = (server, client) => {
   server.tool(
     "create_motion_project",
     "Create a new project with name, workspace, and optional template",
-    createProjectToolSchema.shape,
+    createProjectSchema.shape,
     async (params) => {
       try {
         const result = await client.createProject(params);

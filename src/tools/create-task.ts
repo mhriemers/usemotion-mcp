@@ -1,4 +1,3 @@
-import { z } from "zod";
 import type { ToolRegistrar } from "./types.js";
 import { createTaskSchema } from "../schemas.js";
 

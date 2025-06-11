@@ -45,12 +45,16 @@ export const createTaskSchema = z.object({
         schedule: z
           .string()
           .default("Work Hours")
-          .describe("Schedule the task must adhere to. Defaults to 'Work Hours'"),
+          .describe(
+            "Schedule the task must adhere to. Defaults to 'Work Hours'",
+          ),
       }),
       z.null(),
     ])
     .optional()
-    .describe("Set values to turn auto scheduling on, set value to null to turn off"),
+    .describe(
+      "Set values to turn auto scheduling on, set value to null to turn off",
+    ),
   projectId: z
     .string()
     .optional()
@@ -115,10 +119,7 @@ export const updateTaskSchema = z.object({
     ])
     .optional()
     .describe("Updated auto-scheduling settings or null to disable"),
-  projectId: z
-    .string()
-    .optional()
-    .describe("Updated project ID for the task"),
+  projectId: z.string().optional().describe("Updated project ID for the task"),
   description: z
     .string()
     .optional()
@@ -143,7 +144,9 @@ export const moveTaskSchema = z.object({
   assigneeId: z
     .string()
     .optional()
-    .describe("Optional: The user ID to assign the task to in the new workspace"),
+    .describe(
+      "Optional: The user ID to assign the task to in the new workspace",
+    ),
 });
 
 export const listTasksSchema = z.object({
@@ -163,10 +166,7 @@ export const listTasksSchema = z.object({
     .optional()
     .describe("Limit tasks to a specific project"),
   status: z.string().optional().describe("Filter tasks by status"),
-  workspaceId: z
-    .string()
-    .optional()
-    .describe("Specify workspace for tasks"),
+  workspaceId: z.string().optional().describe("Specify workspace for tasks"),
 });
 
 export const getTaskSchema = z.object({
@@ -247,7 +247,10 @@ export const createProjectSchema = z.object({
 
 export const listProjectsSchema = z.object({
   cursor: z.string().optional().describe("Pagination cursor for next page"),
-  workspaceId: z.string().optional().describe("Filter projects by workspace ID"),
+  workspaceId: z
+    .string()
+    .optional()
+    .describe("Filter projects by workspace ID"),
 });
 
 export const getProjectSchema = z.object({
@@ -261,10 +264,7 @@ export const getProjectSchema = z.object({
 export const listUsersSchema = z.object({
   cursor: z.string().optional().describe("Pagination cursor for next page"),
   teamId: z.string().optional().describe("Filter users by team ID"),
-  workspaceId: z
-    .string()
-    .optional()
-    .describe("Filter users by workspace ID"),
+  workspaceId: z.string().optional().describe("Filter users by workspace ID"),
 });
 
 // ============================================================================
@@ -277,28 +277,6 @@ export const listWorkspacesSchema = z.object({
     .array(z.string().min(1))
     .optional()
     .describe("Expand details of specific workspace IDs"),
-});
-
-// ============================================================================
-// Tool Input Schemas (with defaults)
-// ============================================================================
-
-// These schemas are used for tool inputs where we want to apply defaults
-// without making the fields required in the TypeScript types
-export const listTasksToolSchema = listTasksSchema.extend({
-  includeAllStatuses: z.coerce
-    .boolean()
-    .optional()
-    .default(false)
-    .describe("Include all task statuses (defaults to false)"),
-});
-
-export const createProjectToolSchema = createProjectSchema.extend({
-  priority: z
-    .enum(["ASAP", "HIGH", "MEDIUM", "LOW"])
-    .optional()
-    .default("MEDIUM")
-    .describe("Project priority (defaults to MEDIUM)"),
 });
 
 // ============================================================================

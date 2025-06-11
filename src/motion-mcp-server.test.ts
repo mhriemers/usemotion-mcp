@@ -230,9 +230,7 @@ describe("MotionMCPServer", () => {
           arguments: {},
         });
 
-        expect(mockMotionClient.listTasks).toHaveBeenCalledWith({
-          includeAllStatuses: false,
-        });
+        expect(mockMotionClient.listTasks).toHaveBeenCalledWith({});
         expect(Array.isArray(result.content)).toBe(true);
         expect(result.content).toHaveLength(1);
         const content = result.content as Array<{ type: string; text: string }>;

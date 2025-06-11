@@ -40,9 +40,13 @@ export type CustomFieldNumber = z.infer<typeof customFieldNumberSchema>;
 export type CustomFieldUrl = z.infer<typeof customFieldUrlSchema>;
 export type CustomFieldDate = z.infer<typeof customFieldDateSchema>;
 export type CustomFieldSelect = z.infer<typeof customFieldSelectSchema>;
-export type CustomFieldMultiSelect = z.infer<typeof customFieldMultiSelectSchema>;
+export type CustomFieldMultiSelect = z.infer<
+  typeof customFieldMultiSelectSchema
+>;
 export type CustomFieldPerson = z.infer<typeof customFieldPersonSchema>;
-export type CustomFieldMultiPerson = z.infer<typeof customFieldMultiPersonSchema>;
+export type CustomFieldMultiPerson = z.infer<
+  typeof customFieldMultiPersonSchema
+>;
 export type CustomFieldEmail = z.infer<typeof customFieldEmailSchema>;
 export type CustomFieldPhone = z.infer<typeof customFieldPhoneSchema>;
 export type CustomFieldCheckbox = z.infer<typeof customFieldCheckboxSchema>;
@@ -55,7 +59,10 @@ export type CreateTaskRequest = z.infer<typeof createTaskSchema>;
 export type CreateTaskResponse = z.infer<typeof createTaskResponseSchema>;
 
 // For update task, we need to omit taskId since it's part of the schema but not the request body
-export type UpdateTaskRequest = Omit<z.infer<typeof updateTaskSchema>, "taskId">;
+export type UpdateTaskRequest = Omit<
+  z.infer<typeof updateTaskSchema>,
+  "taskId"
+>;
 export type UpdateTaskResponse = CreateTaskResponse;
 export type GetTaskResponse = CreateTaskResponse;
 
@@ -64,19 +71,31 @@ export type MoveTaskRequest = Omit<z.infer<typeof moveTaskSchema>, "taskId">;
 export type MoveTaskResponse = CreateTaskResponse;
 
 export type MotionUser = z.infer<typeof motionUserSchema>;
-export type MotionListUsersResponse = z.infer<typeof motionListUsersResponseSchema>;
+export type MotionListUsersResponse = z.infer<
+  typeof motionListUsersResponseSchema
+>;
 export type MotionWorkspace = z.infer<typeof motionWorkspaceSchema>;
-export type MotionListWorkspacesResponse = z.infer<typeof motionListWorkspacesResponseSchema>;
+export type MotionListWorkspacesResponse = z.infer<
+  typeof motionListWorkspacesResponseSchema
+>;
 export type MotionProject = z.infer<typeof motionProjectSchema>;
-export type MotionListProjectsResponse = z.infer<typeof motionListProjectsResponseSchema>;
+export type MotionListProjectsResponse = z.infer<
+  typeof motionListProjectsResponseSchema
+>;
 export type CreateProjectRequest = z.infer<typeof createProjectSchema>;
 export type CreateProjectResponse = MotionProject;
 export type GetProjectResponse = MotionProject;
 
-export type MotionListTasksResponse = z.infer<typeof motionListTasksResponseSchema>;
+export type MotionListTasksResponse = z.infer<
+  typeof motionListTasksResponseSchema
+>;
 export type ScheduleTimeBlock = z.infer<typeof scheduleTimeBlockSchema>;
 export type ScheduleDetails = z.infer<typeof scheduleDetailsSchema>;
 export type MotionSchedule = z.infer<typeof motionScheduleSchema>;
-export type MotionSchedulesResponse = z.infer<typeof motionSchedulesResponseSchema>;
+export type MotionSchedulesResponse = z.infer<
+  typeof motionSchedulesResponseSchema
+>;
 export type MotionStatus = z.infer<typeof motionStatusSchema>;
-export type MotionStatusesResponse = z.infer<typeof motionStatusesResponseSchema>;
+export type MotionStatusesResponse = z.infer<
+  typeof motionStatusesResponseSchema
+>;
