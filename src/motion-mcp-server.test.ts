@@ -50,6 +50,8 @@ describe("MotionMCPServer", () => {
     name: "Test Task",
     description: "Test task description",
     dueDate: "2024-12-31T23:59:59Z",
+    deadlineType: "SOFT",
+    parentRecurringTaskId: null,
     completed: false,
     creator: {
       id: "user-1",
@@ -59,6 +61,16 @@ describe("MotionMCPServer", () => {
     workspace: {
       id: "workspace-1",
       name: "Test Workspace",
+      teamId: "team-1",
+      type: "team",
+      labels: [{ name: "test" }, { name: "urgent" }],
+      statuses: [
+        {
+          name: "In Progress",
+          isDefaultStatus: false,
+          isResolvedStatus: false,
+        },
+      ],
     },
     status: {
       id: "status-1",
@@ -68,10 +80,10 @@ describe("MotionMCPServer", () => {
     },
     priority: "HIGH",
     assignees: [],
-    labels: ["test", "urgent"],
+    labels: [{ name: "test" }, { name: "urgent" }],
     duration: 60,
-    createdAt: "2024-01-01T00:00:00Z",
-    updatedAt: "2024-01-01T00:00:00Z",
+    createdTime: "2024-01-01T00:00:00Z",
+    schedulingIssue: false,
   };
 
   const mockUser: MotionUser = {
@@ -249,7 +261,7 @@ describe("MotionMCPServer", () => {
           arguments: {
             workspaceId: "workspace-1",
             assigneeId: "user-1",
-            status: "In Progress",
+            status: ["In Progress"],
             label: "urgent",
             name: "Test",
             projectId: "project-1",
@@ -261,7 +273,7 @@ describe("MotionMCPServer", () => {
         expect(mockMotionClient.listTasks).toHaveBeenCalledWith({
           workspaceId: "workspace-1",
           assigneeId: "user-1",
-          status: "In Progress",
+          status: ["In Progress"],
           label: "urgent",
           name: "Test",
           projectId: "project-1",
@@ -662,7 +674,7 @@ describe("MotionMCPServer", () => {
 
     describe("get_motion_statuses", () => {
       it("should get statuses for workspace", async () => {
-        mockMotionClient.getStatuses.mockResolvedValue([mockStatus]);
+        mockMotionClient.getStatuses.mockResolvedValue([{ status: mockStatus }]);
 
         const result = await client.callTool({
           name: "get_motion_statuses",

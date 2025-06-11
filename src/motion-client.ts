@@ -59,7 +59,9 @@ export class MotionClient {
     if (params.label) queryParams.append("label", params.label);
     if (params.name) queryParams.append("name", params.name);
     if (params.projectId) queryParams.append("projectId", params.projectId);
-    if (params.status) queryParams.append("status", params.status);
+    if (params.status) {
+      params.status.forEach(status => queryParams.append("status", status));
+    }
     if (params.workspaceId)
       queryParams.append("workspaceId", params.workspaceId);
 

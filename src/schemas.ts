@@ -46,7 +46,7 @@ export const autoScheduledSchema = z.object({
     "ISO 8601 Date which is trimmed to the start of the day passed",
   ),
   deadlineType: deadlineTypeEnum.describe("HARD, SOFT, or NONE"),
-  schedule: z.string().describe("Schedule the task must adhere to"),
+  schedule: z.string().describe("Schedule the task must adhere to. Schedule MUST be 'Work Hours' if scheduling the task for another user"),
 });
 
 // Pagination meta schema
@@ -77,7 +77,7 @@ export const createTaskSchema = z.object({
     .union([autoScheduledSchema, z.null()])
     .optional()
     .describe(
-      "Set values to turn auto scheduling on, set value to null to turn off",
+      "Set values to turn auto scheduling on, set value to null to turn off. The status for the task must have auto scheduling enabled",
     ),
   projectId: idField.optional().describe(
     "The project ID the task should be associated with",
@@ -85,7 +85,7 @@ export const createTaskSchema = z.object({
   description: z
     .string()
     .optional()
-    .describe("Github Flavored Markdown for the description"),
+    .describe("Github Flavored Markdown for the input"),
   priority: priorityEnum.optional().describe("ASAP, HIGH, MEDIUM, or LOW"),
   labels: labelsField.optional().describe(
     "The names of the labels to be added to the task",
@@ -113,7 +113,7 @@ export const updateTaskSchema = z.object({
       z.object({
         startDate: iso8601DateField.describe("ISO 8601 Date for scheduling start"),
         deadlineType: deadlineTypeEnum.describe("HARD, SOFT, or NONE"),
-        schedule: z.string().describe("Schedule name"),
+        schedule: z.string().describe("Schedule the task must adhere to. Schedule MUST be 'Work Hours' if scheduling the task for another user"),
       }),
       z.null(),
     ])
@@ -151,11 +151,11 @@ export const listTasksSchema = z.object({
   includeAllStatuses: z.coerce
     .boolean()
     .optional()
-    .describe("Include all task statuses"),
+    .describe("Include all task statuses, cannot be used with status parameter"),
   label: z.string().optional().describe("Filter tasks by label"),
   name: z.string().optional().describe("Case-insensitive task name search"),
   projectId: idField.optional().describe("Limit tasks to a specific project"),
-  status: z.string().optional().describe("Filter tasks by status"),
+  status: z.array(z.string()).optional().describe("Filter tasks by status array, cannot be used with includeAllStatuses"),
   workspaceId: idField.optional().describe("Specify workspace for tasks"),
 });
 
@@ -178,34 +178,34 @@ export const unassignTaskSchema = z.object({
 export const createProjectSchema = z.object({
   name: nameField.describe("The name of the project"),
   workspaceId: minLengthIdField.describe(
-    "The workspace ID where the project should be created",
+    "The workspace to which the project belongs",
   ),
   dueDate: iso8601DateField
     .optional()
-    .describe("ISO 8601 due date for the project"),
+    .describe("ISO 8601 due date on the project, like 2024-03-12T10:52:55.714-06:00"),
   description: z
     .string()
     .optional()
-    .describe("The description of the project (HTML input accepted)"),
-  labels: labelsField.optional().describe("Array of label names for the project"),
-  priority: priorityEnum.optional().describe("Project priority"),
+    .describe("The description of the project. HTML input accepted"),
+  labels: labelsField.optional().describe("The list of labels by name the project should have"),
+  priority: priorityEnum.optional().describe("Defaults to MEDIUM. Options are ASAP, HIGH, MEDIUM, and LOW"),
   projectDefinitionId: idField
     .optional()
-    .describe("Optional ID of the project definition (template) to use"),
+    .describe("Optional ID of the project definition (template) to use. If provided, the stages array must also be included"),
   stages: z
     .array(
       z.object({
         stageDefinitionId: minLengthIdField.describe(
           "ID of the stage definition",
         ),
-        dueDate: iso8601DateField.describe("Due date for this stage (ISO 8601)"),
+        dueDate: iso8601DateField.describe("Due date for this stage"),
         variableInstances: z
           .array(
             z.object({
               variableName: nameField.describe(
-                "Name of the variable definition",
+                "Name of the variable definition (e.g., the 'role' name being assigned)",
               ),
-              value: z.string().describe("The value for the variable"),
+              value: z.string().describe("The value for the variable (e.g., the user ID if the variable type is 'person')"),
             }),
           )
           .optional()
@@ -216,7 +216,7 @@ export const createProjectSchema = z.object({
     )
     .optional()
     .describe(
-      "Optional array of stage objects (required if projectDefinitionId is provided)",
+      "Optional array of stage objects, required if projectDefinitionId is provided. Stages must match the order and number defined in the project definition",
     ),
 });
 
@@ -257,7 +257,7 @@ export const listWorkspacesSchema = z.object({
 
 export const getStatusesSchema = z.object({
   workspaceId: minLengthIdField.describe(
-    "The workspace ID to get statuses for",
+    "Get statuses for a particular workspace",
   ),
 });
 
@@ -349,58 +349,76 @@ export const motionUserSchema = personSchema;
 export const motionStatusSchema = z.object({
   id: z.string().optional(), // Some endpoints include ID, others don't
   name: z.string(),
-  isDefaultStatus: z.boolean(),
-  isResolvedStatus: z.boolean(),
+  isDefaultStatus: z.boolean().optional(), // Optional in some contexts
+  isResolvedStatus: z.boolean().optional(), // Optional in some contexts
 });
 
 export const motionTaskSchema = z.object({
   id: idField,
   name: z.string(),
-  description: z.string().optional(),
-  dueDate: z.string().optional(),
+  description: z.string(), // HTML contents of the description
+  dueDate: z.string().optional(), // datetime
+  deadlineType: deadlineTypeEnum, // Values are HARD, SOFT (default) or NONE
+  parentRecurringTaskId: z.string().nullable(), // Parent recurring task ID if applicable
   completed: z.boolean(),
+  completedTime: z.string().optional(), // datetime
+  updatedTime: z.string().optional(), // datetime
+  startOn: z.string().optional(), // Date in YYYY-MM-DD format
   creator: motionUserSchema,
   project: z
     .object({
       id: idField,
       name: z.string(),
+      description: z.string(), // HTML contents
+      workspaceId: idField,
+      status: motionStatusSchema.optional(),
+      createdTime: z.string().optional(), // datetime
+      updatedTime: z.string().optional(), // datetime
+      customFieldValues: z.record(z.string(), customFieldSchema).optional(),
     })
     .optional(),
   workspace: z.object({
     id: idField,
     name: z.string(),
+    teamId: idField,
+    type: z.string(), // team or individual type
+    labels: z.array(z.object({ name: z.string() })),
+    statuses: z.array(motionStatusSchema),
   }),
   status: motionStatusSchema,
   priority: priorityEnum,
+  labels: z.array(z.object({ name: z.string() })), // Array of label objects
   assignees: z.array(motionUserSchema),
-  labels: z.array(z.string()),
-  duration: z.number().optional(),
-  autoScheduled: z
-    .object({
-      startDate: z.string(),
-      deadlineType: deadlineTypeEnum,
-      schedule: z.string(),
+  duration: z.union([z.string(), z.number()]).optional(), // Can be string ("NONE", "REMINDER") or number
+  scheduledStart: z.string().optional(), // datetime
+  createdTime: z.string(), // datetime
+  scheduledEnd: z.string().optional(), // datetime
+  schedulingIssue: z.boolean(),
+  lastInteractedTime: z.string().optional(), // datetime
+  customFieldValues: z.record(z.string(), customFieldSchema).optional(),
+  chunks: z.array(
+    z.object({
+      id: z.string(),
+      duration: z.number(),
+      scheduledStart: z.string(), // datetime
+      scheduledEnd: z.string(), // datetime
+      completedTime: z.string().optional(), // datetime
+      isFixed: z.boolean(),
     })
-    .optional(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  ).optional(),
 });
 
-export const createTaskResponseSchema = motionTaskSchema.extend({
-  scheduledStart: z.string().optional(),
-  scheduledEnd: z.string().optional(),
-  schedulingIssue: z.boolean(),
-  customFieldValues: z.record(z.string(), customFieldSchema).optional(),
-});
+// The task response is the same as motionTaskSchema, no extension needed
+export const createTaskResponseSchema = motionTaskSchema;
 
 export const motionProjectSchema = z.object({
   id: idField,
   name: z.string(),
-  description: z.string(),
+  description: z.string(), // HTML contents of the description
   workspaceId: idField,
   status: motionStatusSchema,
-  createdTime: z.string(),
-  updatedTime: z.string(),
+  createdTime: z.string().optional(), // datetime, optional in responses
+  updatedTime: z.string().optional(), // datetime, optional in responses
   customFieldValues: z.record(z.string(), customFieldSchema).optional(),
 });
 
@@ -418,8 +436,8 @@ export const motionWorkspaceSchema = z.object({
 });
 
 export const scheduleTimeBlockSchema = z.object({
-  start: z.string(),
-  end: z.string(),
+  start: z.string().describe("When the schedule starts, formatted HH:MM"),
+  end: z.string().describe("When the schedule ends, formatted HH:MM"),
 });
 
 export const scheduleDetailsSchema = z.object({
@@ -461,4 +479,9 @@ export const motionListProjectsResponseSchema = z.object({
 });
 
 export const motionSchedulesResponseSchema = z.array(motionScheduleSchema);
-export const motionStatusesResponseSchema = z.array(motionStatusSchema);
+// Get statuses response returns array of objects with status property
+export const motionStatusesResponseSchema = z.array(
+  z.object({
+    status: motionStatusSchema,
+  })
+);
